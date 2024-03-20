@@ -24,7 +24,7 @@ public class Person {
             generator = "id_sequence"
     )
     @Column(name = "id",updatable = false)
-    private int id;
+    private Integer id;
 
     @Column(name = "name", nullable = false)
     private String name;

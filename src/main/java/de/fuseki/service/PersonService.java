@@ -30,7 +30,7 @@ public class PersonService {
     }
 
     @Transactional
-    public void updatePerson(int id, String name, String surname, String personType, String email, Address address, LocalDate birthDate) {
+    public void updatePerson(Integer id, String name, String surname, String personType, String email, Address address, LocalDate birthDate) {
        Person person;
         if(!personRepository.existsById(id)){
             throw new RuntimeException(); //TODO eigene exception entwickeln.
