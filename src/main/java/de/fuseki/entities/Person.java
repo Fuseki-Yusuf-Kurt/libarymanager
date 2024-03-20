@@ -40,7 +40,7 @@ public class Person {
     private String email;
 
     @Column(name = "address", nullable = false)
-    private String address;
+    private Address address;
 
     @Column(name = "birth_date", nullable = false)
     private LocalDate birthDate;

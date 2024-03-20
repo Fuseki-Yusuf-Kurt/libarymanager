@@ -1,12 +1,15 @@
 package de.fuseki.controller;
 
 import de.fuseki.entities.Person;
+import de.fuseki.service.PersonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
+
 
 @Controller
 @RequestMapping("person")
@@ -17,7 +20,7 @@ public class PersonController {
 
     @GetMapping
     public List<Person> getAllPersons(){
-        return personService.getAllPersons;
+        return personService.getAllPersons();
     }
 
     @DeleteMapping("{studentId}")
@@ -37,10 +40,10 @@ public class PersonController {
             @RequestParam(required = false) String surname,
             @RequestParam(required = false) String personType,
             @RequestParam(required = false) String email,
-            @RequestParam(required = false) String address,
-            @RequestParam(required = false) String birthDate
+            @RequestParam(required = false) Address address,
+            @RequestParam(required = false) LocalDate birthDate
     ){
-        personService.updateStudent(name,surname,personType,email,address,birthDate);
+        personService.updatePerson(id,name,surname,personType,email,address,birthDate);
     }
 
 }
