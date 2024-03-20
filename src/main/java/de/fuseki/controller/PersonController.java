@@ -1,6 +1,7 @@
 package de.fuseki.controller;
 
 import de.fuseki.entities.Person;
+import de.fuseki.enums.PersonType;
 import de.fuseki.service.PersonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,10 +36,10 @@ public class PersonController {
 
     @PutMapping("{studentId}")
     public void updateStudent(
-            @PathVariable("studentId") int id,
+            @PathVariable("studentId") Integer id,
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String surname,
-            @RequestParam(required = false) String personType,
+            @RequestParam(required = false) PersonType personType,
             @RequestParam(required = false) String email,
             @RequestParam(required = false) Address address,
             @RequestParam(required = false) LocalDate birthDate

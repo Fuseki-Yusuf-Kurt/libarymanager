@@ -30,7 +30,7 @@ public class PersonService {
     }
 
     @Transactional
-    public void updatePerson(Integer id, String name, String surname, String personType, String email, Address address, LocalDate birthDate) {
+    public void updatePerson(Integer id, String name, String surname, PersonType personType, String email, Address address, LocalDate birthDate) {
        Person person;
         if(!personRepository.existsById(id)){
             throw new RuntimeException(); //TODO eigene exception entwickeln.
@@ -43,8 +43,8 @@ public class PersonService {
         if (surname != null && !surname.isEmpty() && !surname.equals(person.getSurname())){
             person.setSurname(name);
         }
-        if (personType != null && !personType.isEmpty() && PersonType.valueOf(personType) != person.getPersonType()){
-            person.setPersonType(PersonType.valueOf(personType));
+        if (personType != null && !personType.isEmpty() && personType != person.getPersonType()){
+            person.setPersonType(personType);
         }
         if (email != null && !email.isEmpty() && !email.equals(person.getEmail())){
             if (!personRepository.existsByEmail(email)) {
