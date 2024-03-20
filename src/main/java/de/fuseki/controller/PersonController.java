@@ -4,7 +4,6 @@ import de.fuseki.entities.Person;
 import de.fuseki.enums.PersonType;
 import de.fuseki.service.PersonService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,9 +33,9 @@ public class PersonController {
         personService.addNewPerson(person);
     }
 
-    @PutMapping("{studentId}")
-    public void updateStudent(
-            @PathVariable("studentId") Integer id,
+    @PutMapping("{personId}")
+    public void updatePerson(
+            @PathVariable("personId") Integer id,
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String surname,
             @RequestParam(required = false) PersonType personType,
