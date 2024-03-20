@@ -40,7 +40,7 @@ public class PersonController {
             @RequestParam(required = false) String surname,
             @RequestParam(required = false) PersonType personType,
             @RequestParam(required = false) String email,
-            @RequestParam(required = false) Address address,
+            @RequestParam(required = false) String address,
             @RequestParam(required = false) LocalDate birthDate
     ){
         personService.updatePerson(id,name,surname,personType,email,address,birthDate);

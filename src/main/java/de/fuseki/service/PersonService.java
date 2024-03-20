@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +29,7 @@ public class PersonService {
     }
 
     @Transactional
-    public void updatePerson(Integer id, String name, String surname, PersonType personType, String email, Address address, LocalDate birthDate) {
+    public void updatePerson(Integer id, String name, String surname, PersonType personType, String email, String address, LocalDate birthDate) {
        Person person;
         if(!personRepository.existsById(id)){
             throw new RuntimeException(); //TODO eigene exception entwickeln.
@@ -43,7 +42,7 @@ public class PersonService {
         if (surname != null && !surname.isEmpty() && !surname.equals(person.getSurname())){
             person.setSurname(name);
         }
-        if (personType != null && !personType.isEmpty() && personType != person.getPersonType()){
+        if (personType != null && personType != person.getPersonType()){
             person.setPersonType(personType);
         }
         if (email != null && !email.isEmpty() && !email.equals(person.getEmail())){
@@ -51,7 +50,7 @@ public class PersonService {
                 person.setEmail(email);
             }else throw new RuntimeException();//TODO Exception machen
         }
-        if (address != null && !address.equals(person.getAddress())){
+        if (address != null && !address.isEmpty() && !address.equals(person.getAddress())){
             person.setAddress(address);
         }
         if (birthDate != null && !birthDate.equals(person.getBirthDate())){
