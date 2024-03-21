@@ -1,6 +1,7 @@
 package de.fuseki.entities;
 
 
+import de.fuseki.converter.BirthDateConvert;
 import de.fuseki.enums.PersonType;
 import jakarta.persistence.*;
 import lombok.*;
@@ -8,10 +9,11 @@ import lombok.*;
 import java.time.LocalDate;
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table
+@Table(name = "person")
 public class Person {
     @Id
     @Column(name = "id",updatable = false)
@@ -32,8 +34,8 @@ public class Person {
 
     @Column(name = "address", nullable = false)
     private String address;
-
-    @Column(name = "birth_date", nullable = false)
+    @Convert(converter = BirthDateConvert.class)
+    @Column(name = "birth_date", nullable = false, columnDefinition = "TEXT")
     private LocalDate birthDate;
 
 }
