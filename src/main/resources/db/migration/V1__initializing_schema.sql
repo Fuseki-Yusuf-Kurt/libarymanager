@@ -6,5 +6,5 @@ CREATE TABLE "person"(
     "email" TEXT NOT NULL UNIQUE ,
     "address" TEXT NOT NULL ,
     "birth_date" TEXT NOT NULL,
-     PRIMARY KEY("id" AUTOINCREMENT )
+     PRIMARY KEY("id")
 );

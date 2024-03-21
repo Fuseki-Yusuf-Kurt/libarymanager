@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 
-@Controller
+@RestController
 @RequestMapping("person")
 @RequiredArgsConstructor
 public class PersonController {
