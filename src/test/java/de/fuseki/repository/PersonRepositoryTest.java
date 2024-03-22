@@ -1,5 +1,6 @@
 package de.fuseki.repository;
 
+import de.fuseki.entities.Address;
 import de.fuseki.entities.Person;
 import de.fuseki.enums.PersonType;
 import jakarta.transaction.Transactional;
@@ -22,7 +23,7 @@ class PersonRepositoryTest {
     @Test
     void checkEmailExists() {
         //Given
-        Person person = new Person(1, "testname", "testsurname", PersonType.CLIENT, "testemail@test.test", "testaddress", LocalDate.parse("2000-01-01"));
+        Person person = new Person(1, "testname", "testsurname", PersonType.CLIENT, "testemail@test.test", new Address("test", "test", "test", "test"), LocalDate.parse("2000-01-01"));
         Person personResponse = test.save(person);
         //When
         boolean exists = test.existsByEmail(person.getEmail());
@@ -32,7 +33,7 @@ class PersonRepositoryTest {
     @Test
     void checkEmailNotExists() {
         //Given
-        Person person = new Person(1, "testname", "testsurname", PersonType.CLIENT, "testemail@test.test", "testaddress", LocalDate.parse("2000-01-01"));
+        Person person = new Person(1, "testname", "testsurname", PersonType.CLIENT, "testemail@test.test", new Address("test", "test", "test", "test"), LocalDate.parse("2000-01-01"));
         Person personResponse = test.save(person);
         //When
         boolean exists = test.existsByEmail("notExistingEmail@email.de");
