@@ -2,7 +2,9 @@ package de.fuseki.converter;
 
 import de.fuseki.entities.Address;
 import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 
+@Converter
 public class AddressConverter implements AttributeConverter<Address, String> {
     @Override
     public String convertToDatabaseColumn(Address address) {
