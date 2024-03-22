@@ -1,5 +1,6 @@
 package de.fuseki.service;
 
+import de.fuseki.entities.Address;
 import de.fuseki.entities.Person;
 import de.fuseki.enums.PersonType;
 import de.fuseki.repository.PersonRepository;
@@ -29,7 +30,7 @@ public class PersonService {
     }
 
     @Transactional
-    public void updatePerson(Integer id, String name, String surname, PersonType personType, String email, String address, LocalDate birthDate) {
+    public void updatePerson(Integer id, String name, String surname, PersonType personType, String email, Address address, LocalDate birthDate) {
        Person person;
         if(!personRepository.existsById(id)){
             throw new RuntimeException(); //TODO eigene exception entwickeln.
@@ -50,7 +51,7 @@ public class PersonService {
                 person.setEmail(email);
             }else throw new RuntimeException();//TODO Exception machen
         }
-        if (address != null && !address.isEmpty() && !address.equals(person.getAddress())){
+        if (address != null && !address.equals(person.getAddress())){
             person.setAddress(address);
         }
         if (birthDate != null && !birthDate.equals(person.getBirthDate())){

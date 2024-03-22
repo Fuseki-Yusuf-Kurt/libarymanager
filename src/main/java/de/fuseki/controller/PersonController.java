@@ -1,5 +1,6 @@
 package de.fuseki.controller;
 
+import de.fuseki.entities.Address;
 import de.fuseki.entities.Person;
 import de.fuseki.enums.PersonType;
 import de.fuseki.service.PersonService;
@@ -40,7 +41,7 @@ public class PersonController {
             @RequestParam(required = false) String surname,
             @RequestParam(required = false) PersonType personType,
             @RequestParam(required = false) String email,
-            @RequestParam(required = false) String address,
+            @RequestParam(required = false) Address address,
             @RequestParam(required = false) LocalDate birthDate
     ){
         personService.updatePerson(id,name,surname,personType,email,address,birthDate);

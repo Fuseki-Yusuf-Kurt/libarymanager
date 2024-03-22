@@ -1,6 +1,7 @@
 package de.fuseki.entities;
 
 
+import de.fuseki.converter.AddressConverter;
 import de.fuseki.converter.BirthDateConvert;
 import de.fuseki.enums.PersonType;
 import jakarta.persistence.*;
@@ -31,9 +32,9 @@ public class Person {
 
     @Column(name = "email", nullable = false, unique = true)
     private String email;
-
+    @Convert(converter = AddressConverter.class)
     @Column(name = "address", nullable = false)
-    private String address;
+    private Address address;
     @Convert(converter = BirthDateConvert.class)
     @Column(name = "birth_date", nullable = false, columnDefinition = "TEXT")
     private LocalDate birthDate;
