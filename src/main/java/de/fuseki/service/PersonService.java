@@ -21,7 +21,7 @@ public class PersonService {
         return personRepository.findAll();
     }
 
-    public void deletePerson(int id){
+    public void deletePerson(int id) {
         personRepository.deleteById(id);
     }
 
@@ -31,30 +31,39 @@ public class PersonService {
 
     @Transactional
     public void updatePerson(Integer id, String name, String surname, PersonType personType, String email, Address address, LocalDate birthDate) {
-       Person person;
-        if(!personRepository.existsById(id)){
+        Person person;
+        if (!personRepository.existsById(id)) {
             throw new RuntimeException(); //TODO eigene exception entwickeln.
-        }else {
-            person = personRepository.getReferenceById(id);
         }
-        if (name != null && !name.isEmpty() && !name.equals(person.getName())){
+
+        person = personRepository.getReferenceById(id);
+        if (email != null &&
+                !email.isEmpty() &&
+                !email.equals(person.getEmail()) &&
+                personRepository.existsByEmail(email)) {
+            throw new RuntimeException();//TODO Exception machen
+        }
+
+        if (email != null && !email.isEmpty()) {
+            person.setEmail(email);
+        }
+
+        if (name != null && !name.isEmpty()) {
             person.setName(name);
         }
-        if (surname != null && !surname.isEmpty() && !surname.equals(person.getSurName())){
+
+        if (surname != null && !surname.isEmpty()) {
             person.setSurName(surname);
         }
-        if (personType != null && personType != person.getPersonType()){
+
+        if (personType != null && personType != person.getPersonType()) {
             person.setPersonType(personType);
         }
-        if (email != null && !email.isEmpty() && !email.equals(person.getEmail())){
-            if (!personRepository.existsByEmail(email)) {
-                person.setEmail(email);
-            }else throw new RuntimeException();//TODO Exception machen
-        }
-        if (address != null && !address.equals(person.getAddress())){
+
+        if (address != null) {
             person.setAddress(address);
         }
-        if (birthDate != null && !birthDate.equals(person.getBirthDate())){
+        if (birthDate != null) {
             person.setBirthDate(birthDate);
         }
     }

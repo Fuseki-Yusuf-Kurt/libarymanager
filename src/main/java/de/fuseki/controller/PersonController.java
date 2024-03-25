@@ -19,7 +19,7 @@ public class PersonController {
 
     private final PersonService personService;
 
-    @GetMapping
+    @GetMapping//TODO auf users wechseln
     public List<Person> getAllPersons(){
         return personService.getAllPersons();
     }
