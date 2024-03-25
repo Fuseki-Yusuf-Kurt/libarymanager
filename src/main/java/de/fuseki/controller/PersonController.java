@@ -37,12 +37,12 @@ public class PersonController {
     @PutMapping("{personId}")
     public void updatePerson(
             @PathVariable("personId") Integer id,
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) String surname,
-            @RequestParam(required = false) PersonType personType,
-            @RequestParam(required = false) String email,
-            @RequestParam(required = false) Address address,
-            @RequestParam(required = false) LocalDate birthDate
+            @RequestBody(required = false) String name,
+            @RequestBody(required = false) String surname,
+            @RequestBody(required = false) PersonType personType,
+            @RequestBody(required = false) String email,
+            @RequestBody(required = false) Address address,
+            @RequestBody(required = false) LocalDate birthDate
     ){
         personService.updatePerson(id,name,surname,personType,email,address,birthDate);
     }
