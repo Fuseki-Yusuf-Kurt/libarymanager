@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "persons")
+@Table(name = "person")
 public class Person {
     @Id
     @Column(name = "id", updatable = false)

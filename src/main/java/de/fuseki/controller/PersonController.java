@@ -13,28 +13,28 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("person")
+@RequestMapping
 @RequiredArgsConstructor
 public class PersonController {
 
     private final PersonService personService;
 
-    @GetMapping//TODO auf users wechseln
-    public List<Person> getAllPersons(){
+    @GetMapping("/users")//TODO auf users wechseln
+    public List<Person> getAllPersons() {
         return personService.getAllPersons();
     }
 
-    @DeleteMapping("{studentId}")
-    public void deletePerson(@PathVariable("studentId")int id){
+    @DeleteMapping("/user/{userId}")
+    public void deletePerson(@PathVariable("userId") int id) {
         personService.deletePerson(id);
     }
 
-    @PostMapping
-    public void addPerson(@RequestBody Person person){
+    @PostMapping("/user")
+    public void addPerson(@RequestBody Person person) {
         personService.addNewPerson(person);
     }
 
-    @PutMapping("{personId}")
+    @PutMapping("/user/{personId}")
     public void updatePerson(
             @PathVariable("personId") Integer id,
             @RequestBody(required = false) String name,
@@ -43,8 +43,8 @@ public class PersonController {
             @RequestBody(required = false) String email,
             @RequestBody(required = false) Address address,
             @RequestBody(required = false) LocalDate birthDate
-    ){
-        personService.updatePerson(id,name,surname,personType,email,address,birthDate);
+    ) {
+        personService.updatePerson(id, name, surname, personType, email, address, birthDate);
     }
 
 }
