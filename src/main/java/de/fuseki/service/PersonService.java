@@ -40,8 +40,8 @@ public class PersonService {
         if (name != null && !name.isEmpty() && !name.equals(person.getName())){
             person.setName(name);
         }
-        if (surname != null && !surname.isEmpty() && !surname.equals(person.getSurname())){
-            person.setSurname(name);
+        if (surname != null && !surname.isEmpty() && !surname.equals(person.getSurName())){
+            person.setSurName(surname);
         }
         if (personType != null && personType != person.getPersonType()){
             person.setPersonType(personType);
