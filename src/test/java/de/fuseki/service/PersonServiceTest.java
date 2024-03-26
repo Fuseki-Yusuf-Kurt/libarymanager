@@ -1,5 +1,6 @@
 package de.fuseki.service;
 
+import de.fuseki.dtos.PersonDto;
 import de.fuseki.entities.Address;
 import de.fuseki.entities.Person;
 import de.fuseki.enums.PersonType;
@@ -67,7 +68,7 @@ class PersonServiceTest {
         when(personRepository.existsById(1)).thenReturn(false);
         //Then
         assertThrows(RuntimeException.class, () -> {
-            underTest.updatePerson(1, null, null, null, null, null, null);
+            underTest.updatePerson(new PersonDto(1,null,null, null,null,null,null));
         });
     }
 
@@ -82,7 +83,13 @@ class PersonServiceTest {
         when(personRepository.existsByEmail("existingmail@test.test")).thenReturn(true);
         //Then
         assertThrows(RuntimeException.class, () -> {
-            underTest.updatePerson(1, null, null, null, "esistingmail@test.test", null, null);
+            underTest.updatePerson(new PersonDto(1,
+                                            null,
+                                            null,
+                                            null,
+                                            "existingmail@test.test",
+                                            null,
+                                            null));
         });
     }
 
@@ -109,7 +116,7 @@ class PersonServiceTest {
         when(personRepository.existsByEmail(newEmail)).thenReturn(false);
 
         //When
-        underTest.updatePerson(1, newName, newSurname, newPerosonType, newEmail, newAddress, newDate);
+        underTest.updatePerson(new PersonDto(1, newName, newSurname, newPerosonType, newEmail, newAddress, newDate));
 
         //Then
         assertEquals(newName, person.getName());

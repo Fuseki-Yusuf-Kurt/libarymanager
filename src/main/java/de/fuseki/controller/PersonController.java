@@ -1,13 +1,17 @@
 package de.fuseki.controller;
 
+import de.fuseki.converter.PersonDtoConverterUtil;
+import de.fuseki.dtos.PersonDto;
 import de.fuseki.entities.Address;
 import de.fuseki.entities.Person;
 import de.fuseki.enums.PersonType;
 import de.fuseki.service.PersonService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.*;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -19,7 +23,7 @@ public class PersonController {
 
     private final PersonService personService;
 
-    @GetMapping("/users")//TODO auf users wechseln
+    @GetMapping("/users")
     public List<Person> getAllPersons() {
         return personService.getAllPersons();
     }
@@ -30,21 +34,17 @@ public class PersonController {
     }
 
     @PostMapping("/user")
-    public void addPerson(@RequestBody Person person) {
+    public PersonDto addPerson(@RequestBody Person person) {
         personService.addNewPerson(person);
+        return PersonDtoConverterUtil.convertPersonToPersonDto(person);
     }
 
-    @PutMapping("/user/{personId}")
-    public void updatePerson(
-            @PathVariable("personId") Integer id,
-            @RequestBody(required = false) String name,
-            @RequestBody(required = false) String surname,
-            @RequestBody(required = false) PersonType personType,
-            @RequestBody(required = false) String email,
-            @RequestBody(required = false) Address address,
-            @RequestBody(required = false) LocalDate birthDate
+
+    @PutMapping(value = "/user", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    public PersonDto updatePerson(
+            @RequestBody PersonDto personDto
     ) {
-        personService.updatePerson(id, name, surname, personType, email, address, birthDate);
+        return personService.updatePerson(personDto);
     }
 
 }
