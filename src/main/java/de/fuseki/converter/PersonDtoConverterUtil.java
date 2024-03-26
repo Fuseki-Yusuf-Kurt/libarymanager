@@ -12,7 +12,7 @@ public class PersonDtoConverterUtil {
         personDto.setPersonType(person.getPersonType());
         personDto.setBirthDate(person.getBirthDate());
         personDto.setAddress(person.getAddress());
-        personDto.setEmail(personDto.getEmail());
+        personDto.setEmail(person.getEmail());
         return personDto;
     }
 

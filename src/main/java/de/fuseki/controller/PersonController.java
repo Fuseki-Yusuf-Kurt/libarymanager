@@ -35,8 +35,7 @@ public class PersonController {
 
     @PostMapping("/user")
     public PersonDto addPerson(@RequestBody Person person) {
-        personService.addNewPerson(person);
-        return PersonDtoConverterUtil.convertPersonToPersonDto(person);
+        return personService.addNewPerson(person);
     }
 
 

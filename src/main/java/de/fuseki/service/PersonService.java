@@ -9,6 +9,7 @@ import de.fuseki.exceptions.IdNotFoundException;
 import de.fuseki.repository.PersonRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -25,6 +26,7 @@ public class PersonService {
     }
 
     public void deletePerson(int id) {
+
         personRepository.deleteById(id);
     }
 
