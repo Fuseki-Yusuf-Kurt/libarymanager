@@ -5,6 +5,7 @@ import de.fuseki.entities.Address;
 import de.fuseki.entities.Person;
 import de.fuseki.enums.PersonType;
 import de.fuseki.exceptions.IdNotFoundException;
+import de.fuseki.exceptions.IdShouldBeNullException;
 import de.fuseki.mapper.PersonMapperImpl;
 import de.fuseki.repository.PersonRepository;
 import jakarta.transaction.Transactional;
@@ -26,12 +27,17 @@ public class PersonService {
         return personDtos;
     }
 
-    public void deletePerson(int id) {
-
+    public void deletePerson(Integer id) {
+        if(!personRepository.existsById(id)){
+            throw new IdNotFoundException("Id can´t be found.");
+        }
         personRepository.deleteById(id);
     }
 
     public PersonDto addNewPerson(PersonDto personDto) {
+        if (personDto.getId() != null){
+            throw new IdShouldBeNullException("The Id has to be 0 or Null, because the id is given by the Server.");
+        }
         Person mappedPerson = personMapper.toEntity(personDto);
         Person returnedPerson = personRepository.save(mappedPerson);
         return personMapper.toDto(returnedPerson);

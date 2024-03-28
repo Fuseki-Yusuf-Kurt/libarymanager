@@ -1,7 +1,6 @@
 package de.fuseki.controller;
 
 import de.fuseki.dtos.PersonDto;
-import de.fuseki.entities.Person;
 import de.fuseki.service.PersonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;

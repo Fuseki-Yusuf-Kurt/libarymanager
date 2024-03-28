@@ -4,6 +4,7 @@ import de.fuseki.dtos.PersonDto;
 import de.fuseki.entities.Address;
 import de.fuseki.entities.Person;
 import de.fuseki.enums.PersonType;
+import de.fuseki.exceptions.IdShouldBeNullException;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,8 +15,7 @@ import org.springframework.test.context.jdbc.Sql;
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 @SpringBootTest
@@ -60,7 +60,7 @@ public class PersonControllerIT {
     public void addPersonTest(){
         //Given
         Person person = new Person(1,"yasin","tulyu", PersonType.CLIENT,"yasin.tuylu001@stud.fh-dortmund.de",new Address("karlstr", "33", "essen", "45666"), LocalDate.parse("2004-12-28"));
-        PersonDto personDto = new PersonDto(1,"yasin","tulyu", PersonType.CLIENT,"yasin.tuylu001@stud.fh-dortmund.de",new Address("karlstr", "33", "essen", "45666"), LocalDate.parse("2004-12-28"));
+        PersonDto personDto = new PersonDto(null,"yasin","tulyu", PersonType.CLIENT,"yasin.tuylu001@stud.fh-dortmund.de",new Address("karlstr", "33", "essen", "45666"), LocalDate.parse("2004-12-28"));
         //When
         PersonDto returnedDto = personController.addPerson(personDto);
         //Then
@@ -73,5 +73,14 @@ public class PersonControllerIT {
         assertEquals(person.getBirthDate(),returnedDto.getBirthDate());
     }
 
-
+    @Test
+    @Transactional
+    public void addPersonTestThrowsException(){
+        //Given
+        Person person = new Person(1,"yasin","tulyu", PersonType.CLIENT,"yasin.tuylu001@stud.fh-dortmund.de",new Address("karlstr", "33", "essen", "45666"), LocalDate.parse("2004-12-28"));
+        PersonDto personDto = new PersonDto(1,"yasin","tulyu", PersonType.CLIENT,"yasin.tuylu001@stud.fh-dortmund.de",new Address("karlstr", "33", "essen", "45666"), LocalDate.parse("2004-12-28"));
+        //When
+        //Then
+        assertThrowsExactly(IdShouldBeNullException.class, () ->personController.addPerson(personDto) );
+    }
 }

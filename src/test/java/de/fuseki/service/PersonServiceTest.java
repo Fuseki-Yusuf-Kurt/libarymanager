@@ -4,6 +4,7 @@ import de.fuseki.dtos.PersonDto;
 import de.fuseki.entities.Address;
 import de.fuseki.entities.Person;
 import de.fuseki.enums.PersonType;
+import de.fuseki.exceptions.IdShouldBeNullException;
 import de.fuseki.mapper.PersonMapperImpl;
 import de.fuseki.repository.PersonRepository;
 import jakarta.transaction.Transactional;
@@ -16,8 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -47,6 +47,7 @@ class PersonServiceTest {
     @Test
     void deletePerson() {
         //Mocking
+        when(personRepository.existsById(1)).thenReturn(true);
         //When
         underTest.deletePerson(1);
         //Then
@@ -56,14 +57,36 @@ class PersonServiceTest {
     @Test
     void addNewPerson() {
         //Given
-        PersonDto personDto = new PersonDto(1, "testname", "testsurname", PersonType.CLIENT, "testemail@test.test", new Address("test", "test", "test", "test"), LocalDate.parse("2000-01-01"));
+        PersonDto personDto = new PersonDto(null, "testname", "testsurname", PersonType.CLIENT, "testemail@test.test", new Address("test", "test", "test", "test"), LocalDate.parse("2000-01-01"));
+        PersonDto personDtoWithId = new PersonDto(1, "testname", "testsurname", PersonType.CLIENT, "testemail@test.test", new Address("test", "test", "test", "test"), LocalDate.parse("2000-01-01"));
         Person person = new Person(1, "testname", "testsurname", PersonType.CLIENT, "testemail@test.test", new Address("test", "test", "test", "test"), LocalDate.parse("2000-01-01"));
+        //Mock
         when(personRepository.save(person)).thenReturn(person);
         when(personMapper.toEntity(personDto)).thenReturn(person);
+        when(personMapper.toDto(person)).thenReturn(personDtoWithId);
         //When
-        underTest.addNewPerson(personDto);
+        PersonDto returnedPersonDto = underTest.addNewPerson(personDto);
         //Then
         verify(personRepository, times(1)).save(person);
+        assertEquals(returnedPersonDto.getPersonType(), person.getPersonType());
+        assertEquals(returnedPersonDto.getName(), person.getName());
+        assertEquals(returnedPersonDto.getSurName(), person.getSurName());
+        assertEquals(returnedPersonDto.getEmail(), person.getEmail());
+        assertEquals(returnedPersonDto.getBirthDate(), person.getBirthDate());
+        assertNotNull(returnedPersonDto.getId());
+    }
+
+    @Test
+    void addNewPersonReturnsException() {
+        //Given
+        PersonDto personDto = new PersonDto(1, "testname", "testsurname", PersonType.CLIENT, "testemail@test.test", new Address("test", "test", "test", "test"), LocalDate.parse("2000-01-01"));
+        PersonDto personDtoWithId = new PersonDto(1, "testname", "testsurname", PersonType.CLIENT, "testemail@test.test", new Address("test", "test", "test", "test"), LocalDate.parse("2000-01-01"));
+        Person person = new Person(1, "testname", "testsurname", PersonType.CLIENT, "testemail@test.test", new Address("test", "test", "test", "test"), LocalDate.parse("2000-01-01"));
+
+        //When
+
+        assertThrowsExactly(IdShouldBeNullException.class,() ->
+                underTest.addNewPerson(personDto));
     }
 
     @Test

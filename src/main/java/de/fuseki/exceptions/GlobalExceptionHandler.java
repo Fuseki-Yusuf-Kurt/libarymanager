@@ -12,7 +12,7 @@ import java.util.Date;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(IdNotFoundException.class)
-    public ResponseEntity<ErrorObject> handleIdNotFoundException(IdNotFoundException idNotFoundException, WebRequest request){
+    public ResponseEntity<ErrorObject> handleIdNotFoundException(IdNotFoundException idNotFoundException, WebRequest request) {
         ErrorObject errorObject = new ErrorObject();
 
         errorObject.setStatusCode(HttpStatus.NOT_FOUND.value());
@@ -21,4 +21,16 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<ErrorObject>(errorObject, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(IdShouldBeNullException.class)
+    public ResponseEntity<ErrorObject> handleIdShouldBeNullException(IdShouldBeNullException e) {
+        ErrorObject errorObject = new ErrorObject();
+
+        errorObject.setStatusCode(HttpStatus.BAD_REQUEST.value());
+        errorObject.setMessage(e.getMessage());
+        errorObject.setTimestamp(new Date());
+
+        return new ResponseEntity<ErrorObject>(errorObject, HttpStatus.BAD_REQUEST);
+    }
+
 }

@@ -21,7 +21,8 @@ import java.time.LocalDate;
 public class Person {
     @Id
     @Column(name = "id")
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id = 0;
 
     @Column(name = "name", nullable = false)
     private String name;
