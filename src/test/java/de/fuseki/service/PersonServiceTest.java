@@ -4,6 +4,7 @@ import de.fuseki.dtos.PersonDto;
 import de.fuseki.entities.Address;
 import de.fuseki.entities.Person;
 import de.fuseki.enums.PersonType;
+import de.fuseki.exceptions.EmailAlreadyExistsException;
 import de.fuseki.exceptions.IdShouldBeNullException;
 import de.fuseki.mapper.PersonMapperImpl;
 import de.fuseki.repository.PersonRepository;
@@ -98,7 +99,7 @@ class PersonServiceTest {
     }
 
     @Test
-    void updatePersonThrowsExceptionBecouseEmailAlreadyExists() {
+    void updatePersonThrowsExceptionBecauseEmailAlreadyExists() {
         //Given
         Person person = new Person(1, "testname", "testsurname", PersonType.CLIENT, "testemail@test.test", new Address("test", "test", "test", "test"), LocalDate.parse("2000-01-01"));
         //Mocking
@@ -106,7 +107,7 @@ class PersonServiceTest {
         when(personRepository.getReferenceById(1)).thenReturn(person);
         when(personRepository.existsByEmail("existingmail@test.test")).thenReturn(true);
         //Then
-        assertThrows(RuntimeException.class, () -> {
+        assertThrows(EmailAlreadyExistsException.class, () -> {
             underTest.updatePerson(new PersonDto(1,
                     null,
                     null,

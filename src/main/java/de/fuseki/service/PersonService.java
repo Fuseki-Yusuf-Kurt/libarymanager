@@ -40,6 +40,9 @@ public class PersonService {
         if (personDto.getId() != null) {
             throw new IdShouldBeNullException("The Id has to be 0 or Null, because the id is given by the Server.");
         }
+        if (personRepository.existsByEmail(personDto.getEmail())){
+            throw new EmailAlreadyExistsException();
+        }
         Person mappedPerson = personMapper.toEntity(personDto);
         Person returnedPerson = personRepository.save(mappedPerson);
         return personMapper.toDto(returnedPerson);
