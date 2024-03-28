@@ -21,8 +21,12 @@ public class PersonController {
         return personService.getAllPersons();
     }
 
-    @DeleteMapping("/user/{userId}")
-    public void deletePerson(@PathVariable("userId") int id) {
+    @GetMapping("/user/{id}")
+    public PersonDto getPerson(@PathVariable("id") Integer id){
+        return personService.getPerson(id);
+    }
+    @DeleteMapping("/user/{id}")
+    public void deletePerson(@PathVariable("id") int id) {
         personService.deletePerson(id);
     }
 

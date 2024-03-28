@@ -28,19 +28,26 @@ public class PersonService {
         return personDtos;
     }
 
-    public void deletePerson(Integer id) {
-        try {
-            personRepository.deleteById(id);
-        } catch (IllegalArgumentException e) {
+    public PersonDto getPerson(Integer id) {
+        if (!personRepository.existsById(id)) {
             throw new IdNotFoundException("Id can´t be found.");
         }
+        PersonDto foundPerson = personMapper.toDto(personRepository.getReferenceById(id));
+        return foundPerson;
+    }
+
+    public void deletePerson(Integer id) {
+        if (!personRepository.existsById(id)) {
+            throw new IdNotFoundException("Id can´t be found.");
+        }
+        personRepository.deleteById(id);
     }
 
     public PersonDto addNewPerson(PersonDto personDto) {
         if (personDto.getId() != null) {
             throw new IdShouldBeNullException("The Id has to be 0 or Null, because the id is given by the Server.");
         }
-        if (personRepository.existsByEmail(personDto.getEmail())){
+        if (personRepository.existsByEmail(personDto.getEmail())) {
             throw new EmailAlreadyExistsException();
         }
         Person mappedPerson = personMapper.toEntity(personDto);
@@ -94,4 +101,5 @@ public class PersonService {
         }
         return personMapper.toDto(person);
     }
+
 }

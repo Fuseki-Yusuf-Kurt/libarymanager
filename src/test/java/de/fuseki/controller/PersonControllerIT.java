@@ -83,4 +83,23 @@ public class PersonControllerIT {
         //Then
         assertThrowsExactly(IdShouldBeNullException.class, () ->personController.addPerson(personDto) );
     }
+
+    @Test
+    @Transactional
+    public void getOnePersonTest(){
+        Person person = new Person(1,"yasin","tulyu", PersonType.CLIENT,"yasin.tuylu001@stud.fh-dortmund.de",new Address("karlstr", "33", "essen", "45666"), LocalDate.parse("2004-12-28"));
+        PersonDto personDto = new PersonDto(null,"yasin","tulyu", PersonType.CLIENT,"yasin.tuylu001@stud.fh-dortmund.de",new Address("karlstr", "33", "essen", "45666"), LocalDate.parse("2004-12-28"));
+
+        personController.addPerson(personDto);
+        PersonDto foundPersonDto = personController.getPerson(person.getId());
+
+        assertEquals(person.getPersonType(),foundPersonDto.getPersonType());
+        assertEquals(person.getId(),foundPersonDto.getId());
+        assertEquals(person.getEmail(),foundPersonDto.getEmail());
+        assertEquals(person.getName(),foundPersonDto.getName());
+        assertEquals(person.getSurName(),foundPersonDto.getSurName());
+        assertEquals(person.getAddress(),foundPersonDto.getAddress());
+        assertEquals(person.getBirthDate(),foundPersonDto.getBirthDate());
+    }
+
 }
