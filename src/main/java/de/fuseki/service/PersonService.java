@@ -4,6 +4,7 @@ import de.fuseki.dtos.PersonDto;
 import de.fuseki.entities.Address;
 import de.fuseki.entities.Person;
 import de.fuseki.enums.PersonType;
+import de.fuseki.exceptions.EmailAlreadyExistsException;
 import de.fuseki.exceptions.IdNotFoundException;
 import de.fuseki.exceptions.IdShouldBeNullException;
 import de.fuseki.mapper.PersonMapperImpl;
@@ -28,14 +29,15 @@ public class PersonService {
     }
 
     public void deletePerson(Integer id) {
-        if(!personRepository.existsById(id)){
+        try {
+            personRepository.deleteById(id);
+        } catch (IllegalArgumentException e) {
             throw new IdNotFoundException("Id can´t be found.");
         }
-        personRepository.deleteById(id);
     }
 
     public PersonDto addNewPerson(PersonDto personDto) {
-        if (personDto.getId() != null){
+        if (personDto.getId() != null) {
             throw new IdShouldBeNullException("The Id has to be 0 or Null, because the id is given by the Server.");
         }
         Person mappedPerson = personMapper.toEntity(personDto);
@@ -56,7 +58,7 @@ public class PersonService {
                 !newEmail.isEmpty() &&
                 !newEmail.equals(person.getEmail()) &&
                 personRepository.existsByEmail(newEmail)) {
-            throw new RuntimeException();//TODO Exception machen
+            throw new EmailAlreadyExistsException();
         }
 
         if (newEmail != null && !newEmail.isEmpty()) {

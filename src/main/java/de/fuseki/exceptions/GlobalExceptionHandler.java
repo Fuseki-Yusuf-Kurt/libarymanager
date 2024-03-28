@@ -33,4 +33,14 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<ErrorObject>(errorObject, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(EmailAlreadyExistsException.class)
+    public ResponseEntity<ErrorObject> handleEmailAlreadyExistsException(EmailAlreadyExistsException emailAlreadyExistsException) {
+        ErrorObject errorObject = new ErrorObject();
+
+        errorObject.setStatusCode(HttpStatus.CONFLICT.value());
+        errorObject.setMessage("Email already used!");
+        errorObject.setTimestamp(new Date());
+
+        return new ResponseEntity<ErrorObject>(errorObject, HttpStatus.CONFLICT);
+    }
 }

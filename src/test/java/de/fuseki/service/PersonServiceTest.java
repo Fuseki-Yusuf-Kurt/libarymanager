@@ -46,8 +46,6 @@ class PersonServiceTest {
 
     @Test
     void deletePerson() {
-        //Mocking
-        when(personRepository.existsById(1)).thenReturn(true);
         //When
         underTest.deletePerson(1);
         //Then
