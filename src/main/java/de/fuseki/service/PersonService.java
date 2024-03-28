@@ -1,15 +1,14 @@
 package de.fuseki.service;
 
-import de.fuseki.converter.PersonDtoConverterUtil;
 import de.fuseki.dtos.PersonDto;
 import de.fuseki.entities.Address;
 import de.fuseki.entities.Person;
 import de.fuseki.enums.PersonType;
 import de.fuseki.exceptions.IdNotFoundException;
+import de.fuseki.mapper.PersonMapperImpl;
 import de.fuseki.repository.PersonRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -19,10 +18,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PersonService {
     private final PersonRepository personRepository;
+    private final PersonMapperImpl personMapper;
 
-
-    public List<Person> getAllPersons() {
-        return personRepository.findAll();
+    public List<PersonDto> getAllPersons() {
+        List<Person> personList = personRepository.findAll();
+        List<PersonDto> personDtos = personMapper.toDtoList(personList);
+        return personDtos;
     }
 
     public void deletePerson(int id) {
@@ -30,9 +31,10 @@ public class PersonService {
         personRepository.deleteById(id);
     }
 
-    public PersonDto addNewPerson(Person person) {
-        personRepository.save(person);
-        return PersonDtoConverterUtil.convertPersonToPersonDto(person);
+    public PersonDto addNewPerson(PersonDto personDto) {
+        Person mappedPerson = personMapper.toEntity(personDto);
+        Person returnedPerson = personRepository.save(mappedPerson);
+        return personMapper.toDto(returnedPerson);
     }
 
     @Transactional
@@ -79,6 +81,6 @@ public class PersonService {
         if (newBirthDate != null) {
             person.setBirthDate(newBirthDate);
         }
-        return PersonDtoConverterUtil.convertPersonToPersonDto(person);
+        return personMapper.toDto(person);
     }
 }

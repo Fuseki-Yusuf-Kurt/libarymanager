@@ -1,18 +1,12 @@
 package de.fuseki.controller;
 
-import de.fuseki.converter.PersonDtoConverterUtil;
 import de.fuseki.dtos.PersonDto;
-import de.fuseki.entities.Address;
 import de.fuseki.entities.Person;
-import de.fuseki.enums.PersonType;
 import de.fuseki.service.PersonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.*;
-import java.time.LocalDate;
 import java.util.List;
 
 
@@ -24,7 +18,7 @@ public class PersonController {
     private final PersonService personService;
 
     @GetMapping("/users")
-    public List<Person> getAllPersons() {
+    public List<PersonDto> getAllPersons() {
         return personService.getAllPersons();
     }
 
@@ -34,8 +28,8 @@ public class PersonController {
     }
 
     @PostMapping("/user")
-    public PersonDto addPerson(@RequestBody Person person) {
-        return personService.addNewPerson(person);
+    public PersonDto addPerson(@RequestBody PersonDto personDto) {
+        return personService.addNewPerson(personDto);
     }
 
 

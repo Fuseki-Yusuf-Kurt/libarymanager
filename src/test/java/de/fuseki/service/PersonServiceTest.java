@@ -4,8 +4,9 @@ import de.fuseki.dtos.PersonDto;
 import de.fuseki.entities.Address;
 import de.fuseki.entities.Person;
 import de.fuseki.enums.PersonType;
+import de.fuseki.mapper.PersonMapperImpl;
 import de.fuseki.repository.PersonRepository;
-import org.junit.jupiter.api.BeforeEach;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -20,27 +21,27 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
+@Transactional
 class PersonServiceTest {
     @Mock
     PersonRepository personRepository;
     @InjectMocks
     private PersonService underTest;
-
-    @BeforeEach
-    void setUp() {
-    }
+    @Mock
+    PersonMapperImpl personMapper;
 
     @Test
     void gestsAllPersons() {
         //Given
         Person person = new Person(1, "testname", "testsurname", PersonType.CLIENT, "testemail@test.test", new Address("test", "test", "test", "test"), LocalDate.parse("2000-01-01"));
+        PersonDto personDto = new PersonDto(1, "testname", "testsurname", PersonType.CLIENT, "testemail@test.test", new Address("test", "test", "test", "test"), LocalDate.parse("2000-01-01"));
         //Mocking
+        when(personMapper.toDtoList(List.of(person))).thenReturn(List.of(personDto));
         when(personRepository.findAll()).thenReturn(List.of(person));
-
         //When
-        List<Person> personList = underTest.getAllPersons();
+        List<PersonDto> personDtoList = underTest.getAllPersons();
         //Then
-        assertEquals(List.of(person), personList);
+        assertEquals(personMapper.toDtoList(List.of(person)), personDtoList);
     }
 
     @Test
@@ -55,9 +56,12 @@ class PersonServiceTest {
     @Test
     void addNewPerson() {
         //Given
+        PersonDto personDto = new PersonDto(1, "testname", "testsurname", PersonType.CLIENT, "testemail@test.test", new Address("test", "test", "test", "test"), LocalDate.parse("2000-01-01"));
         Person person = new Person(1, "testname", "testsurname", PersonType.CLIENT, "testemail@test.test", new Address("test", "test", "test", "test"), LocalDate.parse("2000-01-01"));
+        when(personRepository.save(person)).thenReturn(person);
+        when(personMapper.toEntity(personDto)).thenReturn(person);
         //When
-        underTest.addNewPerson(person);
+        underTest.addNewPerson(personDto);
         //Then
         verify(personRepository, times(1)).save(person);
     }
@@ -68,7 +72,7 @@ class PersonServiceTest {
         when(personRepository.existsById(1)).thenReturn(false);
         //Then
         assertThrows(RuntimeException.class, () -> {
-            underTest.updatePerson(new PersonDto(1,null,null, null,null,null,null));
+            underTest.updatePerson(new PersonDto(1, null, null, null, null, null, null));
         });
     }
 
@@ -76,7 +80,6 @@ class PersonServiceTest {
     void updatePersonThrowsExceptionBecouseEmailAlreadyExists() {
         //Given
         Person person = new Person(1, "testname", "testsurname", PersonType.CLIENT, "testemail@test.test", new Address("test", "test", "test", "test"), LocalDate.parse("2000-01-01"));
-        Person person2 = new Person(2, "testname", "testsurname", PersonType.CLIENT, "existingmail@test.test", new Address("test", "test", "test", "test"), LocalDate.parse("2000-01-01"));
         //Mocking
         when(personRepository.existsById(1)).thenReturn(true);
         when(personRepository.getReferenceById(1)).thenReturn(person);
@@ -84,12 +87,12 @@ class PersonServiceTest {
         //Then
         assertThrows(RuntimeException.class, () -> {
             underTest.updatePerson(new PersonDto(1,
-                                            null,
-                                            null,
-                                            null,
-                                            "existingmail@test.test",
-                                            null,
-                                            null));
+                    null,
+                    null,
+                    null,
+                    "existingmail@test.test",
+                    null,
+                    null));
         });
     }
 
@@ -109,7 +112,7 @@ class PersonServiceTest {
         String newSurname = "newsurname";
         PersonType newPerosonType = PersonType.ADMIN;
         LocalDate newDate = LocalDate.parse("2001-01-01");
-        Address newAddress = new Address("newStreet","newNumber","newCity","newPostalCode");
+        Address newAddress = new Address("newStreet", "newNumber", "newCity", "newPostalCode");
         //Mocking
         when(personRepository.existsById(1)).thenReturn(true);
         when(personRepository.getReferenceById(1)).thenReturn(person);

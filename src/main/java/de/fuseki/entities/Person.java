@@ -15,11 +15,13 @@ import java.time.LocalDate;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
 @Entity
 @Table(name = "person")
 public class Person {
     @Id
     @Column(name = "id", updatable = false)
+
     private Integer id;
 
     @Column(name = "name", nullable = false)
