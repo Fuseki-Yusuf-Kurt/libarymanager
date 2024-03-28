@@ -20,8 +20,7 @@ import java.time.LocalDate;
 @Table(name = "person")
 public class Person {
     @Id
-    @Column(name = "id", updatable = false)
-
+    @Column(name = "id")
     private Integer id;
 
     @Column(name = "name", nullable = false)
