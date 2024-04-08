@@ -4,6 +4,7 @@ import de.fuseki.dtos.PersonDto;
 import de.fuseki.service.PersonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,30 +18,32 @@ public class PersonController {
     private final PersonService personService;
 
     @GetMapping("/users")
-    public List<PersonDto> getAllPersons() {
-        return personService.getAllPersons();
+    public ResponseEntity<List<PersonDto>> getAllPersons() {
+        return ResponseEntity.ok(personService.getAllPersons());
     }
 
     @GetMapping("/user/{id}")
-    public PersonDto getPerson(@PathVariable("id") Integer id){
-        return personService.getPerson(id);
+    public ResponseEntity<PersonDto> getPerson(@PathVariable("id") Integer id) {
+        return ResponseEntity.ok(personService.getPerson(id));
     }
+
     @DeleteMapping("/user/{id}")
-    public void deletePerson(@PathVariable("id") int id) {
+    public ResponseEntity deletePerson(@PathVariable("id") int id) {
         personService.deletePerson(id);
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/user")
-    public PersonDto addPerson(@RequestBody PersonDto personDto) {
-        return personService.addNewPerson(personDto);
+    public ResponseEntity<PersonDto> addPerson(@RequestBody PersonDto personDto) {
+        return ResponseEntity.ok(personService.addNewPerson(personDto));
     }
 
 
     @PutMapping(value = "/user", consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public PersonDto updatePerson(
+    public ResponseEntity<PersonDto> updatePerson(
             @RequestBody PersonDto personDto
     ) {
-        return personService.updatePerson(personDto);
+        return ResponseEntity.ok().body(personService.updatePerson(personDto));
     }
 
 }
