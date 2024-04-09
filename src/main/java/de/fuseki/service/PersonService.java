@@ -67,7 +67,7 @@ public class PersonService {
         }catch (EntityNotFoundException entityNotFoundException){
             throw new IdNotFoundException("Id does not exist.");
         }
-        
+
         String newEmail = personDto.getEmail();
         if (newEmail != null &&
                 !newEmail.isEmpty() &&

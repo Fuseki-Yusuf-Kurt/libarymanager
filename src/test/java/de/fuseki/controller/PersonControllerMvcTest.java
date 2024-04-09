@@ -107,7 +107,7 @@ public class PersonControllerMvcTest extends AbstractControllerMvc {
 
     @Test
     @Transactional
-    public void postOnePerson() throws Exception {
+    public void postOnePerson() throws Exception {//TODO Get nach dem ausführen zum prüfen.
         //Given
         PersonDto personDto = new PersonDto(null, "yasin", "tulyu", PersonType.CLIENT, "yasin.tuylu001@stud.fh-dortmund.de", new Address("karlstr", "33", "essen", "45666"), LocalDate.parse("2004-12-28"));
 
@@ -120,8 +120,16 @@ public class PersonControllerMvcTest extends AbstractControllerMvc {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andReturn();
 
-        PersonDto personDtoResult = objectMapper.readValue(result.getResponse().getContentAsString(), PersonDto.class);
+        PersonDto returnedDtoFromTestedMethod = objectMapper.readValue(result.getResponse().getContentAsString(), PersonDto.class);
 
+
+        MvcResult mvcResult = mvc.perform(get("/user/{id}", 1))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andReturn();
+        PersonDto personDtoResult = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), PersonDto.class);
+
+        assertEquals(returnedDtoFromTestedMethod,personDtoResult);
         assertEquals(personDto.getName(), personDtoResult.getName());
         assertEquals(personDto.getSurName(), personDtoResult.getSurName());
         assertEquals(personDto.getEmail(), personDtoResult.getEmail());
