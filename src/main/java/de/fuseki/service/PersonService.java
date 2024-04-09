@@ -9,6 +9,7 @@ import de.fuseki.exceptions.IdNotFoundException;
 import de.fuseki.exceptions.IdShouldBeNullException;
 import de.fuseki.mapper.PersonMapperImpl;
 import de.fuseki.repository.PersonRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -58,11 +59,15 @@ public class PersonService {
     @Transactional
     public PersonDto updatePerson(PersonDto personDto) {
         Person person;
-        if (!personRepository.existsById(personDto.getId())) {
-            throw new IdNotFoundException("Id is invalid.");
-        }
-        person = personRepository.getReferenceById(personDto.getId());
+        try {
+            person = personRepository.getReferenceById(personDto.getId());
 
+        }catch (IllegalArgumentException illegalArgumentException){
+            throw new IdNotFoundException("Id should not be null.");
+        }catch (EntityNotFoundException entityNotFoundException){
+            throw new IdNotFoundException("Id does not exist.");
+        }
+        
         String newEmail = personDto.getEmail();
         if (newEmail != null &&
                 !newEmail.isEmpty() &&

@@ -8,6 +8,7 @@ import de.fuseki.exceptions.EmailAlreadyExistsException;
 import de.fuseki.exceptions.IdShouldBeNullException;
 import de.fuseki.mapper.PersonMapperImpl;
 import de.fuseki.repository.PersonRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -93,7 +94,7 @@ class PersonServiceTest {
     @Test
     void updatePersonThrowsExceptionBecouseIdDoesNotExist() {
         //Mocking
-        when(personRepository.existsById(1)).thenReturn(false);
+        when(personRepository.getReferenceById(1)).thenThrow(EntityNotFoundException.class);
         //Then
         assertThrows(RuntimeException.class, () -> {
             underTest.updatePerson(new PersonDto(1, null, null, null, null, null, null));
@@ -105,7 +106,6 @@ class PersonServiceTest {
         //Given
         Person person = new Person(1, "testname", "testsurname", PersonType.CLIENT, "testemail@test.test", new Address("test", "test", "test", "test"), LocalDate.parse("2000-01-01"));
         //Mocking
-        when(personRepository.existsById(1)).thenReturn(true);
         when(personRepository.getReferenceById(1)).thenReturn(person);
         when(personRepository.existsByEmail("existingmail@test.test")).thenReturn(true);
         //Then
@@ -138,7 +138,6 @@ class PersonServiceTest {
         LocalDate newDate = LocalDate.parse("2001-01-01");
         Address newAddress = new Address("newStreet", "newNumber", "newCity", "newPostalCode");
         //Mocking
-        when(personRepository.existsById(1)).thenReturn(true);
         when(personRepository.getReferenceById(1)).thenReturn(person);
         when(personRepository.existsByEmail(newEmail)).thenReturn(false);
 
