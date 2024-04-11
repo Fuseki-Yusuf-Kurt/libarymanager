@@ -5,7 +5,7 @@ import jakarta.persistence.Converter;
 
 import java.time.LocalDate;
 @Converter
-public class BirthDateConvert implements AttributeConverter<LocalDate,String> {
+public class LocalDateConvert implements AttributeConverter<LocalDate,String> {
     @Override
     public String convertToDatabaseColumn(LocalDate localDate) {
         return localDate.toString();

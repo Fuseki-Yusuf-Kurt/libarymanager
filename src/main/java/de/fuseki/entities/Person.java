@@ -2,7 +2,7 @@ package de.fuseki.entities;
 
 
 import de.fuseki.converter.AddressConverter;
-import de.fuseki.converter.BirthDateConvert;
+import de.fuseki.converter.LocalDateConvert;
 import de.fuseki.enums.PersonType;
 import jakarta.persistence.*;
 import lombok.*;
@@ -41,7 +41,7 @@ public class Person {
     @Column(name = "address", nullable = false)
     private Address address;
 
-    @Convert(converter = BirthDateConvert.class)
+    @Convert(converter = LocalDateConvert.class)
     @Column(name = "birth_date", nullable = false, columnDefinition = "TEXT")
     private LocalDate birthDate;
 

@@ -1,22 +1,17 @@
 package de.fuseki.converter;
 
-import de.fuseki.entities.Address;
-import de.fuseki.entities.Person;
-import de.fuseki.enums.PersonType;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
 import java.time.Month;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class BirthDateConvertTest {
+class LocalDateConvertTest {
 
     LocalDate testDate = LocalDate.parse("2000-01-01");
 
-    BirthDateConvert testConvert = new BirthDateConvert();
+    LocalDateConvert testConvert = new LocalDateConvert();
 
     @Test
     void convertToDatabaseColumnTest() {

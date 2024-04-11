@@ -1,7 +1,7 @@
 package de.fuseki.dtos;
 
 import de.fuseki.converter.AddressConverter;
-import de.fuseki.converter.BirthDateConvert;
+import de.fuseki.converter.LocalDateConvert;
 import de.fuseki.entities.Address;
 import de.fuseki.enums.PersonType;
 import jakarta.persistence.Convert;
@@ -25,6 +25,6 @@ public class PersonDto {
     private String email;
     @Convert(converter = AddressConverter.class)
     private Address address;
-    @Convert(converter = BirthDateConvert.class)
+    @Convert(converter = LocalDateConvert.class)
     private LocalDate birthDate;
 }
