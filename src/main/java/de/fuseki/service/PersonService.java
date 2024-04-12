@@ -7,6 +7,7 @@ import de.fuseki.enums.PersonType;
 import de.fuseki.exceptions.EmailAlreadyExistsException;
 import de.fuseki.exceptions.IdNotFoundException;
 import de.fuseki.exceptions.IdShouldBeNullException;
+import de.fuseki.exceptions.IsNullException;
 import de.fuseki.mapper.PersonMapperImpl;
 import de.fuseki.repository.PersonRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -51,6 +52,15 @@ public class PersonService {
         if (personRepository.existsByEmail(personDto.getEmail())) {
             throw new EmailAlreadyExistsException();
         }
+        if (personDto.getName() == null
+                || personDto.getSurName() == null
+                || personDto.getEmail() == null
+            || personDto.getPersonType() == null
+            || personDto.getAddress() == null
+            || personDto.getBirthDate() ==null
+        ){
+            throw new IsNullException("Name, Surname, Email, PersonType, Address and BirthDate can't be null!");
+        }
         Person mappedPerson = personMapper.toEntity(personDto);
         Person returnedPerson = personRepository.save(mappedPerson);
         return personMapper.toDto(returnedPerson);
@@ -61,50 +71,51 @@ public class PersonService {
         Person person;
         try {
             person = personRepository.getReferenceById(personDto.getId());
+            String newEmail = personDto.getEmail();
 
-        }catch (IllegalArgumentException illegalArgumentException){
+            if (newEmail != null &&
+                    !newEmail.isEmpty() &&
+                    !newEmail.equals(person.getEmail()) &&
+                    personRepository.existsByEmail(newEmail)) {
+                throw new EmailAlreadyExistsException();
+            }
+
+            if (newEmail != null && !newEmail.isEmpty()) {
+                person.setEmail(newEmail);
+            }
+
+            String newName = personDto.getName();
+            if (newName != null && !newName.isEmpty()) {
+                person.setName(newName);
+            }
+
+            String newSurname = personDto.getSurName();
+            if (newSurname != null && !newSurname.isEmpty()) {
+                person.setSurName(newSurname);
+            }
+
+            PersonType newPersonType = personDto.getPersonType();
+            if (newPersonType != null) {
+                person.setPersonType(newPersonType);
+            }
+
+            Address newAddress = personDto.getAddress();
+            if (newAddress != null) {
+                person.setAddress(newAddress);
+            }
+
+            LocalDate newBirthDate = personDto.getBirthDate();
+            if (newBirthDate != null) {
+                person.setBirthDate(newBirthDate);
+            }
+            return personMapper.toDto(person);
+        } catch (IllegalArgumentException illegalArgumentException) {
             throw new IdNotFoundException("Id should not be null.");
-        }catch (EntityNotFoundException entityNotFoundException){
+        } catch (EntityNotFoundException entityNotFoundException) {
             throw new IdNotFoundException("Id does not exist.");
         }
 
-        String newEmail = personDto.getEmail();
-        if (newEmail != null &&
-                !newEmail.isEmpty() &&
-                !newEmail.equals(person.getEmail()) &&
-                personRepository.existsByEmail(newEmail)) {
-            throw new EmailAlreadyExistsException();
-        }
 
-        if (newEmail != null && !newEmail.isEmpty()) {
-            person.setEmail(newEmail);
-        }
-
-        String newName = personDto.getName();
-        if (newName != null && !newName.isEmpty()) {
-            person.setName(newName);
-        }
-
-        String newSurname = personDto.getSurName();
-        if (newSurname != null && !newSurname.isEmpty()) {
-            person.setSurName(newSurname);
-        }
-
-        PersonType newPersonType = personDto.getPersonType();
-        if (newPersonType != null && newPersonType != person.getPersonType()) {
-            person.setPersonType(newPersonType);
-        }
-
-        Address newAddress = personDto.getAddress();
-        if (newAddress != null) {
-            person.setAddress(newAddress);
-        }
-
-        LocalDate newBirthDate = personDto.getBirthDate();
-        if (newBirthDate != null) {
-            person.setBirthDate(newBirthDate);
-        }
-        return personMapper.toDto(person);
     }
 
 }

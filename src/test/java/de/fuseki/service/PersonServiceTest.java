@@ -90,7 +90,18 @@ class PersonServiceTest {
         assertThrowsExactly(IdShouldBeNullException.class,() ->
                 underTest.addNewPerson(personDto));
     }
+    @Test
+    void addNewPersonReturnsIsNullException() {
+        //Given
+        PersonDto personDto = new PersonDto(null, "testname", null, PersonType.CLIENT, "testemail@test.test", new Address("test", "test", "test", "test"), LocalDate.parse("2000-01-01"));
+        PersonDto personDtoWithId = new PersonDto(1, "testname", "testsurname", PersonType.CLIENT, "testemail@test.test", new Address("test", "test", "test", "test"), LocalDate.parse("2000-01-01"));
+        Person person = new Person(1, "testname", "testsurname", PersonType.CLIENT, "testemail@test.test", new Address("test", "test", "test", "test"), LocalDate.parse("2000-01-01"));
 
+        //When
+
+        assertThrows(Exception.class,() ->
+                underTest.addNewPerson(personDto));
+    }
     @Test
     void updatePersonThrowsExceptionBecouseIdDoesNotExist() {
         //Mocking

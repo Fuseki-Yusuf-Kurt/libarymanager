@@ -34,7 +34,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(EmailAlreadyExistsException.class)
-    public ResponseEntity<ErrorObject> handleEmailAlreadyExistsException(EmailAlreadyExistsException emailAlreadyExistsException) {
+    public ResponseEntity<ErrorObject> handleEmailAlreadyExistsException() {
         ErrorObject errorObject = new ErrorObject();
 
         errorObject.setStatusCode(HttpStatus.CONFLICT.value());
@@ -42,5 +42,16 @@ public class GlobalExceptionHandler {
         errorObject.setTimestamp(new Date());
 
         return new ResponseEntity<ErrorObject>(errorObject, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(IsNullException.class)
+    public ResponseEntity<ErrorObject> handleIsNullException(IsNullException e){
+        ErrorObject errorObject = new ErrorObject();
+
+        errorObject.setStatusCode(HttpStatus.BAD_REQUEST.value());
+        errorObject.setMessage(e.getMessage());
+        errorObject.setTimestamp(new Date());
+
+        return new ResponseEntity<ErrorObject>(errorObject,HttpStatus.BAD_REQUEST);
     }
 }
