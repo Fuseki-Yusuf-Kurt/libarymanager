@@ -1,19 +1,19 @@
 package de.fuseki.mapper;
 
-import de.fuseki.dtos.PersonDto;
-import de.fuseki.entities.Person;
+import de.fuseki.dtos.BookDto;
+import de.fuseki.entities.Book;
 import org.mapstruct.*;
 
 import java.util.List;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
-public interface PersonMapper {
-    Person toEntity(PersonDto personDto);
+public interface BookMapper {
+    Book toEntity(BookDto bookDto);
 
-    PersonDto toDto(Person person);
+    BookDto toDto(Book book);
 
-    List<PersonDto> toDtoList(List<Person> personList);
-    
+    List<BookDto> toDtoList(List<Book> bookList);
+
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    Person partialUpdate(PersonDto personDto, @MappingTarget Person person);
+    Book partialUpdate(BookDto bookDto, @MappingTarget() Book book);
 }
