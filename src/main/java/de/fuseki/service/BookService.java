@@ -6,9 +6,7 @@ import de.fuseki.exceptions.IdNotFoundException;
 import de.fuseki.exceptions.IdShouldBeNullException;
 import de.fuseki.exceptions.IsNullException;
 import de.fuseki.mapper.BookMapper;
-import de.fuseki.mapper.BookMapperImpl;
 import de.fuseki.repository.BookRepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +30,7 @@ public class BookService {
     private Book getBookFromDatabase(int id) {
         try {
             Optional<Book> foundBook = bookRepository.findById(id);
-            if (foundBook.isEmpty()){
+            if (foundBook.isEmpty()) {
                 throw new IdNotFoundException("Id not found!");
             }
             return foundBook.get();

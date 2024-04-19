@@ -7,14 +7,11 @@ import de.fuseki.exceptions.EmailAlreadyExistsException;
 import de.fuseki.exceptions.IdNotFoundException;
 import de.fuseki.exceptions.IdShouldBeNullException;
 import de.fuseki.exceptions.IsNullException;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MvcResult;
@@ -206,10 +203,10 @@ public class PersonControllerMvcTest extends AbstractControllerMvc {
         assertEquals(IsNullException.class, returnedException.getClass());
     }
 
-    private static Stream<Arguments> provideTestData(){
+    private static Stream<Arguments> provideTestData() {
         return Stream.of(
                 Arguments.of(
-                        "name = null throws IsNullException." ,
+                        "name = null throws IsNullException.",
                         PersonDto.builder()
                                 .name(null)
                                 .surName("notNull")
