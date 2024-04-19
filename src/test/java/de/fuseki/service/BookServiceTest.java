@@ -5,11 +5,10 @@ import de.fuseki.entities.Book;
 import de.fuseki.exceptions.IdNotFoundException;
 import de.fuseki.exceptions.IdShouldBeNullException;
 import de.fuseki.exceptions.IsNullException;
-import de.fuseki.mapper.BookMapperImpl;
+import de.fuseki.mapper.BookMapper;
 import de.fuseki.repository.BookRepository;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -31,8 +30,6 @@ class BookServiceTest {
     BookRepository bookRepository;
     @InjectMocks
     private BookService underTest;
-    @Mock
-    BookMapperImpl bookMapper;
 
     Book testBook;
     Book testBookWithoutId;
@@ -51,12 +48,11 @@ class BookServiceTest {
     void gestsAllBooks() {
         //Given
         //Mocking
-        when(bookMapper.toDtoList(List.of(testBook))).thenReturn(List.of(testBookDto));
         when(bookRepository.findAll()).thenReturn(List.of(testBook));
         //When
         List<BookDto> bookDtoList = underTest.getAllBooks();
         //Then
-        assertEquals(bookMapper.toDtoList(List.of(testBook)), bookDtoList);
+        assertEquals(BookMapper.MAPPER.toDtoList(List.of(testBook)), bookDtoList);
     }
 
     @Test

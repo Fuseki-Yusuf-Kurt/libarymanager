@@ -4,6 +4,7 @@ import de.fuseki.entities.Address;
 import de.fuseki.entities.Person;
 import de.fuseki.enums.PersonType;
 import jakarta.transaction.Transactional;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,7 +13,7 @@ import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
+@Disabled // Not needed, because im testing here generated Code and for this im booting a whole Database.
 @SpringBootTest
 @Transactional
 class PersonRepositoryTest {

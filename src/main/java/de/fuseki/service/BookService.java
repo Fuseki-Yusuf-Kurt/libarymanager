@@ -5,6 +5,7 @@ import de.fuseki.entities.Book;
 import de.fuseki.exceptions.IdNotFoundException;
 import de.fuseki.exceptions.IdShouldBeNullException;
 import de.fuseki.exceptions.IsNullException;
+import de.fuseki.mapper.BookMapper;
 import de.fuseki.mapper.BookMapperImpl;
 import de.fuseki.repository.BookRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -18,15 +19,14 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class BookService {
     private final BookRepository bookRepository;
-    private final BookMapperImpl bookMapper;
 
     public List<BookDto> getAllBooks() {
         List<Book> foundBooks = bookRepository.findAll();
-        return bookMapper.toDtoList(foundBooks);
+        return BookMapper.MAPPER.toDtoList(foundBooks);
     }
 
     public BookDto getBook(Integer id) {
-        return bookMapper.toDto(getBookFromDatabase(id));
+        return BookMapper.MAPPER.toDto(getBookFromDatabase(id));
     }
 
     private Book getBookFromDatabase(int id) {
@@ -55,15 +55,15 @@ public class BookService {
         if (inputBookDto.getTitle() == null) {
             throw new IsNullException("Title can't be Null.");
         }
-        Book inoputBook = bookMapper.toEntity(inputBookDto);
+        Book inoputBook = BookMapper.MAPPER.toEntity(inputBookDto);
         Book returnedBook = bookRepository.save(inoputBook);
-        return bookMapper.toDto(returnedBook);
+        return BookMapper.MAPPER.toDto(returnedBook);
     }
 
     public BookDto updateBook(BookDto bookDto) {
         Book bookFromDatabase = getBookFromDatabase(bookDto.getId());
 
-        bookMapper.partialUpdate(bookDto, bookFromDatabase);
-        return bookMapper.toDto(bookFromDatabase);
+        BookMapper.MAPPER.partialUpdate(bookDto, bookFromDatabase);
+        return BookMapper.MAPPER.toDto(bookFromDatabase);
     }
 }
