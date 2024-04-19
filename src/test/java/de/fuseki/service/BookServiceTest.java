@@ -93,4 +93,18 @@ class BookServiceTest {
         // Then
         assertThrowsExactly(IdNotFoundException.class, () -> underTest.getBook(1));
     }
+
+    @Test
+    void updateBook() {
+        BookDto updateDto = new BookDto(1, "newTitle", "newGenre", null, null);
+        // Mocking
+        when(bookRepository.findById(1)).thenReturn(Optional.of(testBook));
+        // When
+        BookDto returnedDto = underTest.updateBook(updateDto);
+
+        // Then
+        BookDto updatedDto = new BookDto(1, "newTitle", "newGenre", testBook.getAuthor(), testBook.getReleaseDate());
+
+        assertEquals(updatedDto, returnedDto);
+    }
 }
