@@ -198,5 +198,4 @@ public class BookControllerMockMvcTest extends AbstractControllerMvc {
         assertEquals(updateDto, returnedBookDto);
     }
 
-    
 }
