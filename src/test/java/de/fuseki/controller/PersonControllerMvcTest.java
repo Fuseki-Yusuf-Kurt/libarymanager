@@ -68,6 +68,7 @@ public class PersonControllerMvcTest extends AbstractControllerMvc {
     @Transactional
     public void putNameOfYasinToBurak() throws Exception {
         PersonDto dtoOfTheChanges = new PersonDto(1, "NewName", null, null, null, null, null);
+        System.err.println(objectMapper.writeValueAsString(dtoOfTheChanges));
         MvcResult mvcResult = mvc.perform(put(API_USER)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dtoOfTheChanges)))

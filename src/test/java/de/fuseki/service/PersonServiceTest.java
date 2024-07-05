@@ -6,6 +6,7 @@ import de.fuseki.entities.Person;
 import de.fuseki.enums.PersonType;
 import de.fuseki.exceptions.EmailAlreadyExistsException;
 import de.fuseki.exceptions.IdShouldBeNullException;
+import de.fuseki.mapper.PersonMapper;
 import de.fuseki.mapper.PersonMapperImpl;
 import de.fuseki.repository.PersonRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -31,7 +32,7 @@ class PersonServiceTest {
     @InjectMocks
     private PersonService underTest;
     @Mock
-    PersonMapperImpl personMapper;
+    PersonMapper personMapper;
 
     @Test
     void gestsAllPersons() {

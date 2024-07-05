@@ -54,4 +54,15 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<ErrorObject>(errorObject,HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(DateNotValidException.class)
+    public ResponseEntity<ErrorObject> dateNotValidException(DateNotValidException e){
+        ErrorObject errorObject = new ErrorObject();
+
+        errorObject.setStatusCode(HttpStatus.BAD_REQUEST.value());
+        errorObject.setMessage(e.getMessage());
+        errorObject.setTimestamp(new Date());
+
+        return new ResponseEntity<ErrorObject>(errorObject,HttpStatus.BAD_REQUEST);
+    }
 }

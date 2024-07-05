@@ -193,9 +193,11 @@ public class BookControllerMockMvcTest extends AbstractControllerMvc {
                         content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)
                 ).andReturn();
 
-        BookDto returnedBookDto = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), BookDto.class);
+        BookDto returnedBookDtoFromPut = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), BookDto.class);
+        BookDto returnedBookDtoFromCheck = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), BookDto.class);
 
-        assertEquals(updateDto, returnedBookDto);
+        assertEquals(updateDto, returnedBookDtoFromPut);
+        assertEquals(updateDto, returnedBookDtoFromCheck);
     }
 
 }
