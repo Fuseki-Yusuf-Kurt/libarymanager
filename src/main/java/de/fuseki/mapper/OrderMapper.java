@@ -13,17 +13,11 @@ import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
-public abstract class OrderMapper {
-    @Autowired
-    private PersonService personService;
+public interface OrderMapper {
 
+    Order toEntity(final OrderDto orderDto);
 
-    public abstract Order toEntity(final OrderDto orderDto);
-
-    @Mapping(target = "person", expression = "java(mapPerson(createOrderDto))")
-    public abstract Order toEntity(final CreateOrderDto createOrderDto);
-
-    public Person mapPerson(final CreateOrderDto createOrderDto) {
-        return personService.getPersonFromDatabase(createOrderDto.getPersonId());
-    }
+    @Mapping(target = "person", ignore = true)
+    @Mapping(target = "book", ignore = true)
+    Order toEntity(final CreateOrderDto createOrderDto);
 }
