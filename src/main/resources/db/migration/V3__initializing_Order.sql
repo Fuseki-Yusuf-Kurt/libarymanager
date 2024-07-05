@@ -3,9 +3,8 @@ CREATE TABLE "order"
     "id"           INTEGER,
     "book_id"        INTEGER,
     "person_id"       INTEGER,
-    "genre"        TEXT,
-    "release_date" TEXT,
-    "busy_date" TEXT,
-
+    "begin_date"        TEXT,
+    "end_date" TEXT,
+    "type" TEXT,
     PRIMARY KEY ("id")
 );

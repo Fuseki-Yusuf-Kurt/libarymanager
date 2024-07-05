@@ -3,9 +3,9 @@ CREATE TABLE "book"
     "id"           INTEGER,
     "title"        TEXT NOT NULL,
     "author"       TEXT,
-    "begin_date"        TEXT,
-    "end_date" TEXT,
-    "type" TEXT,
+    "genre"        TEXT,
+    "release_date" TEXT,
+    "busy_date" TEXT,
 
     PRIMARY KEY ("id")
 );
