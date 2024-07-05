@@ -1,2 +1,6 @@
-package de.fuseki.enums;public enum OrderType {
+package de.fuseki.enums;
+
+public enum OrderType {
+    LOAN,
+    RESERVATION
 }
