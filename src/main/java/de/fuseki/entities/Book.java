@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,4 +26,14 @@ public class Book {
     @Column(name = "release_date")
     @Convert(converter = LocalDateConvert.class)
     private LocalDate releaseDate;
+    @Column(name = "busy_date")
+    @Convert(converter = LocalDateConvert.class)
+    private LocalDate busyDate;
+
+    public Book(Integer id, String title, String genre, String author, LocalDate releaseDate) {
+        this.title = title;
+        this.genre = genre;
+        this.author = author;
+        this.releaseDate = releaseDate;
+    }
 }

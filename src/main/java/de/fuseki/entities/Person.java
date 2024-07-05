@@ -8,6 +8,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Getter
@@ -45,4 +47,16 @@ public class Person {
     @Column(name = "birth_date", nullable = false, columnDefinition = "TEXT")
     private LocalDate birthDate;
 
+    @OneToMany(mappedBy = "person")
+    private List<Order> orderList;
+
+    public Person(int id, String name, String surName, PersonType personType, String email, Address address, LocalDate birthDate) {
+        this.id = id;
+        this.name = name;
+        this.surName = surName;
+        this.personType = personType;
+        this.email = email;
+        this.address = address;
+        this.birthDate = birthDate;
+    }
 }
