@@ -40,7 +40,7 @@ public class PersonService {
 
     public PersonDto addNewPerson(PersonDto personDto) {
         if (personDto.getId() != null) {
-            throw new IdShouldBeNullException("The Id has to be 0 or Null, because the id is given by the Server.");
+            throw new IdShouldBeNullException("The Id has to be 0 or Null, because the id is given by the server.");
         }
         if (personRepository.existsByEmail(personDto.getEmail())) {
             throw new EmailAlreadyExistsException();

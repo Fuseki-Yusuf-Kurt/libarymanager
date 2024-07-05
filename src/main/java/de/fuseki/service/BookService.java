@@ -53,8 +53,8 @@ public class BookService {
         if (inputBookDto.getTitle() == null) {
             throw new IsNullException("Title can't be Null.");
         }
-        Book inoputBook = BookMapper.MAPPER.toEntity(inputBookDto);
-        Book returnedBook = bookRepository.save(inoputBook);
+        Book inputBook = BookMapper.MAPPER.toEntity(inputBookDto);
+        Book returnedBook = bookRepository.save(inputBook);
         return BookMapper.MAPPER.toDto(returnedBook);
     }
 
