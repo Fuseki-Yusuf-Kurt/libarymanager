@@ -1,8 +1,7 @@
 package de.fuseki.controller;
 
 import de.fuseki.dtos.CreateOrderDto;
-import de.fuseki.dtos.OrderDto;
-import de.fuseki.service.OrderService;
+import de.fuseki.service.MediaOrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,10 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class OrderController {
 
-    private final OrderService orderService;
+    private final MediaOrderService mediaOrderService;
     @PostMapping("/order")
     public ResponseEntity addOrder(@RequestBody CreateOrderDto createOrderDto) {
-        orderService.addOrder(createOrderDto);
+        mediaOrderService.addOrder(createOrderDto);
         return ResponseEntity.ok().build();
     }
 }

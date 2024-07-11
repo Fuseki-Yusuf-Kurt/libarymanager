@@ -1,5 +1,6 @@
 package de.fuseki.dtos;
 
+import de.fuseki.enums.MediaOrderType;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -10,4 +11,5 @@ public class CreateOrderDto {
     private Integer personId;
     private LocalDate beginDate;
     private LocalDate endDate;
+    private MediaOrderType type;
 }

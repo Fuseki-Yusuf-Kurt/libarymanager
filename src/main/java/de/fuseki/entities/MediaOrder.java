@@ -4,15 +4,21 @@ import de.fuseki.converter.AddressConverter;
 import de.fuseki.converter.LocalDateConvert;
 import de.fuseki.enums.OrderType;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.time.LocalDate;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
 @Entity
 @Table(name = "order")
 public class Order {
     @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @OneToOne

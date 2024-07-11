@@ -15,6 +15,7 @@ import de.fuseki.repository.PersonRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,6 +28,8 @@ public class OrderService {
     private final OrderMapper orderMapper;
 
     public void addOrder(CreateOrderDto createOrderDto) {
+        Optional<Order> orderOptional = orderRepository.findById(1);
+
         if (createOrderDto.getPersonId() == null){
             throw new IsNullException("personId is null");
         }
@@ -51,8 +54,10 @@ public class OrderService {
         }else throw new IsNullException("bookId not found");
 
         Order mappedOrder = orderMapper.toEntity(createOrderDto);
-        mappedOrder.setBook(book);
-        mappedOrder.setPerson(person);
+        book.setBusyDate(mappedOrder.getEndDate());
+        person.getOrderList().add(mappedOrder);
+       // mappedOrder.setBook(book);
+        //mappedOrder.setPerson(person);
         orderRepository.save(mappedOrder);
     }
 
