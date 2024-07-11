@@ -8,13 +8,11 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
@@ -24,7 +22,7 @@ public class Person {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id = 0;
+    private Integer id;
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -32,7 +30,7 @@ public class Person {
     @Column(name = "surname", nullable = false)
     private String surName;
 
-    @Column(name = "person_Type", nullable = false)
+    @Column(name = "person_type", nullable = false)
     @Enumerated(EnumType.STRING)
     private PersonType personType;
 
@@ -48,15 +46,5 @@ public class Person {
     private LocalDate birthDate;
 
     @OneToMany(mappedBy = "person")
-    private List<Order> orderList;
-
-    public Person(int id, String name, String surName, PersonType personType, String email, Address address, LocalDate birthDate) {
-        this.id = id;
-        this.name = name;
-        this.surName = surName;
-        this.personType = personType;
-        this.email = email;
-        this.address = address;
-        this.birthDate = birthDate;
-    }
+    private List<MediaOrder> mediaOrderList;
 }

@@ -1,6 +1,5 @@
 package de.fuseki.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import de.fuseki.dtos.BookDto;
 import de.fuseki.exceptions.IdNotFoundException;
 import de.fuseki.exceptions.IdShouldBeNullException;
@@ -28,15 +27,43 @@ public class BookControllerMockMvcTest extends AbstractControllerMvc {
 
     @BeforeEach
     void setUp() {
-        testBook1 = new BookDto(1, "testTitle1", "testGenre1", "testAuthor1", LocalDate.parse("2001-01-01"));
-        testBook1WithoutId = new BookDto(null, "testTitle1", "testGenre1", "testAuthor1", LocalDate.parse("2001-01-01"));
-        testBook2 = new BookDto(2, "testTitle2", "testGenre2", "testAuthor2", LocalDate.parse("2002-02-02"));
-        testBook2WithoutId = new BookDto(null, "testTitle2", "testGenre2", "testAuthor2", LocalDate.parse("2002-02-02"));
-        testBook3 = new BookDto(3, "testTitle3", "testGenre3", "testAuthor3", LocalDate.parse("2003-03-03"));
+        testBook1 = new BookDto();
+        testBook1.setId(1);
+        testBook1.setTitle("testTitle1");
+        testBook1.setAuthor("testAuthor1");
+        testBook1.setGenre("testGenre1");
+        testBook1.setReleaseDate(LocalDate.parse("2001-01-01"));
+
+        testBook1WithoutId = new BookDto();
+        testBook1WithoutId.setTitle("testTitle1");
+        testBook1WithoutId.setAuthor("testAuthor1");
+        testBook1WithoutId.setGenre("testGenre1");
+        testBook1WithoutId.setReleaseDate(LocalDate.parse("2001-01-01"));
+
+        testBook2 = new BookDto();
+        testBook2.setId(2);
+        testBook2.setTitle("testTitle2");
+        testBook2.setAuthor("testAuthor2");
+        testBook2.setGenre("testGenre2");
+        testBook2.setReleaseDate(LocalDate.parse("2002-02-02"));
+
+        testBook2WithoutId = new BookDto();
+        testBook2WithoutId.setTitle("testTitle2");
+        testBook2WithoutId.setAuthor("testAuthor2");
+        testBook2WithoutId.setGenre("testGenre2");
+        testBook2WithoutId.setReleaseDate(LocalDate.parse("2002-02-02"));
+
+        testBook3 = new BookDto();
+        testBook3.setId(3);
+        testBook3.setTitle("testTitle3");
+        testBook3.setAuthor("testAuthor3");
+        testBook3.setGenre("testGenre3");
+        testBook3.setReleaseDate(LocalDate.parse("2003-03-03"));
+
     }
 
     @Test
-    @Sql("/3-test-books.sql")
+    @Sql("/3-test-Books.sql")
     public void mvcTestGettingAllBooks() throws Exception {
         MvcResult mvcResult = mvc.perform(get("/books"))
                 .andExpectAll(
@@ -53,7 +80,7 @@ public class BookControllerMockMvcTest extends AbstractControllerMvc {
     }
 
     @Test
-    @Sql("/3-test-books.sql")
+    @Sql("/3-test-Books.sql")
     public void mvcTestGettingOneBook() throws Exception {
         MvcResult mvcResult = mvc.perform(get("/book/{id}", testBook1.getId()))
                 .andExpectAll(
@@ -67,7 +94,7 @@ public class BookControllerMockMvcTest extends AbstractControllerMvc {
     }
 
     @Test
-    @Sql("/3-test-books.sql")
+    @Sql("/3-test-Books.sql")
     public void mvcTestGettingOneBookByNotExistingIdReturnsIdNotFoundException() throws Exception {
         MvcResult mvcResult = mvc.perform(get("/book/{id}", 100))
                 .andExpectAll(
@@ -82,7 +109,7 @@ public class BookControllerMockMvcTest extends AbstractControllerMvc {
     }
 
     @Test
-    @Sql("/3-test-books.sql")
+    @Sql("/3-test-Books.sql")
     public void mvcTestDeletingBook() throws Exception {
         MvcResult mvcResult = mvc.perform(delete("/book/{id}", testBook1.getId()))
                 .andExpectAll(
@@ -102,7 +129,7 @@ public class BookControllerMockMvcTest extends AbstractControllerMvc {
     }
 
     @Test
-    @Sql("/3-test-books.sql")
+    @Sql("/3-test-Books.sql")
     public void mvcTestDeletingBookThrowsIdNotFoundException() throws Exception {
         MvcResult mvcResult = mvc.perform(delete("/book/{id}", 100))
                 .andExpectAll(
@@ -176,9 +203,14 @@ public class BookControllerMockMvcTest extends AbstractControllerMvc {
     }
 
     @Test
-    @Sql("/3-test-books.sql")
+    @Sql("/3-test-Books.sql")
     public void mvcTestUpdateBook() throws Exception {
-        BookDto updateDto = new BookDto(1, "newTitle1", "newGenre1", "newAuthor1", LocalDate.parse("2005-05-05"));
+        BookDto updateDto = new BookDto();
+        updateDto.setId(1);
+        updateDto.setTitle("newTitle1");
+        updateDto.setGenre("newGenre1");
+        updateDto.setAuthor("newAuthor");
+        updateDto.setReleaseDate(LocalDate.parse("2005-05-05"));
         MvcResult mvcResult = mvc.perform(put("/book")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(updateDto)))

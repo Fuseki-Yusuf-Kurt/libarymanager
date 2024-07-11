@@ -15,4 +15,5 @@ public class BookDto {
     private String genre;
     private String author;
     private LocalDate releaseDate;
+    private LocalDate busyDate;
 }

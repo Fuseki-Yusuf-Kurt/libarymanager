@@ -1,6 +1,6 @@
 package de.fuseki.controller;
 
-import de.fuseki.dtos.CreateOrderDto;
+import de.fuseki.dtos.CreateMediaOrderDto;
 import de.fuseki.service.MediaOrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping
 @RequiredArgsConstructor
-public class OrderController {
+public class MediaOrderController {
 
     private final MediaOrderService mediaOrderService;
     @PostMapping("/order")
-    public ResponseEntity addOrder(@RequestBody CreateOrderDto createOrderDto) {
-        mediaOrderService.addOrder(createOrderDto);
+    public ResponseEntity addOrder(@RequestBody CreateMediaOrderDto createMediaOrderDto) {
+        mediaOrderService.addOrder(createMediaOrderDto);
         return ResponseEntity.ok().build();
     }
 }

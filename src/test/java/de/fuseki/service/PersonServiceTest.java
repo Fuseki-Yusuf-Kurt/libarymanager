@@ -37,8 +37,23 @@ class PersonServiceTest {
     @Test
     void gestsAllPersons() {
         //Given
-        Person person = new Person(1, "testname", "testsurname", PersonType.CLIENT, "testemail@test.test", new Address("test", "test", "test", "test"), LocalDate.parse("2000-01-01"));
-        PersonDto personDto = new PersonDto(1, "testname", "testsurname", PersonType.CLIENT, "testemail@test.test", new Address("test", "test", "test", "test"), LocalDate.parse("2000-01-01"));
+        Person person = new Person();
+        person.setName("testname");
+        person.setSurName("testsurname");
+        person.setPersonType(PersonType.CLIENT);
+        person.setEmail("testemail@test.test");
+        person.setAddress(new Address("test", "test", "test", "test"));
+        person.setBirthDate(LocalDate.parse("2000-01-01"));
+
+        PersonDto personDto = new PersonDto();
+        personDto.setId(null);
+        personDto.setName("testname");
+        personDto.setSurName("testsurname");
+        personDto.setPersonType(PersonType.CLIENT);
+        personDto.setEmail("testemail@test.test");
+        personDto.setAddress(new Address("test", "test", "test", "test"));
+        personDto.setBirthDate(LocalDate.parse("2000-01-01"));
+
         //Mocking
         when(personMapper.toDtoList(List.of(person))).thenReturn(List.of(personDto));
         when(personRepository.findAll()).thenReturn(List.of(person));
@@ -61,10 +76,14 @@ class PersonServiceTest {
     @Test
     void addNewPersonReturnsException() {
         //Given
-        PersonDto personDto = new PersonDto(1, "testname", "testsurname", PersonType.CLIENT, "testemail@test.test", new Address("test", "test", "test", "test"), LocalDate.parse("2000-01-01"));
-        PersonDto personDtoWithId = new PersonDto(1, "testname", "testsurname", PersonType.CLIENT, "testemail@test.test", new Address("test", "test", "test", "test"), LocalDate.parse("2000-01-01"));
-        Person person = new Person(1, "testname", "testsurname", PersonType.CLIENT, "testemail@test.test", new Address("test", "test", "test", "test"), LocalDate.parse("2000-01-01"));
-
+        PersonDto personDto = new PersonDto();
+        personDto.setId(1);
+        personDto.setName("testname");
+        personDto.setSurName("testsurname");
+        personDto.setPersonType(PersonType.CLIENT);
+        personDto.setEmail("testemail@test.test");
+        personDto.setAddress(new Address("test", "test", "test", "test"));
+        personDto.setBirthDate(LocalDate.parse("2000-01-01"));
         //When
 
         assertThrowsExactly(IdShouldBeNullException.class, () ->
@@ -74,9 +93,14 @@ class PersonServiceTest {
     @Test
     void addNewPersonReturnsIsNullException() {
         //Given
-        PersonDto personDto = new PersonDto(null, "testname", null, PersonType.CLIENT, "testemail@test.test", new Address("test", "test", "test", "test"), LocalDate.parse("2000-01-01"));
-        PersonDto personDtoWithId = new PersonDto(1, "testname", "testsurname", PersonType.CLIENT, "testemail@test.test", new Address("test", "test", "test", "test"), LocalDate.parse("2000-01-01"));
-        Person person = new Person(1, "testname", "testsurname", PersonType.CLIENT, "testemail@test.test", new Address("test", "test", "test", "test"), LocalDate.parse("2000-01-01"));
+        PersonDto personDto = new PersonDto();
+        personDto.setId(1);
+        personDto.setName("testname");
+        personDto.setSurName("testsurname");
+        personDto.setPersonType(PersonType.CLIENT);
+        personDto.setEmail("testemail@test.test");
+        personDto.setAddress(new Address("test", "test", "test", "test"));
+        personDto.setBirthDate(LocalDate.parse("2000-01-01"));
 
         //When
 
@@ -97,7 +121,13 @@ class PersonServiceTest {
     @Test
     void updatePersonThrowsExceptionBecauseEmailAlreadyExists() {
         //Given
-        Person person = new Person(1, "testname", "testsurname", PersonType.CLIENT, "testemail@test.test", new Address("test", "test", "test", "test"), LocalDate.parse("2000-01-01"));
+        Person person = new Person();
+        person.setId(1);
+        person.setName("testname");
+        person.setPersonType(PersonType.CLIENT);
+        person.setEmail("testemail@test.test");
+        person.setBirthDate(LocalDate.parse("2000-01-01"));
+        person.setAddress(new Address("test", "test", "test", "test"));
         //Mocking
         when(personRepository.findById(1)).thenReturn(Optional.of(person));
         when(personRepository.existsByEmail("existingmail@test.test")).thenReturn(true);
@@ -122,7 +152,15 @@ class PersonServiceTest {
         String oldMail = "testemail@test.test";
         Address oldAddress = new Address("test", "test", "test", "test");
         LocalDate oldDate = LocalDate.parse("2000-01-01");
-        Person person = new Person(1, oldName, oldSurname, oldPersonType, oldMail, oldAddress, oldDate);
+
+        Person person = new Person();
+        person.setId(1);
+        person.setName(oldName);
+        person.setSurName(oldSurname);
+        person.setPersonType(oldPersonType);
+        person.setEmail(oldMail);
+        person.setAddress(oldAddress);
+        person.setBirthDate(oldDate);
 
         String newName = "newname";
         String newEmail = "newemail@test.test";

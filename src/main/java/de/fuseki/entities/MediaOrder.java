@@ -1,8 +1,7 @@
 package de.fuseki.entities;
 
-import de.fuseki.converter.AddressConverter;
 import de.fuseki.converter.LocalDateConvert;
-import de.fuseki.enums.OrderType;
+import de.fuseki.enums.MediaOrderType;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -14,8 +13,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @EqualsAndHashCode
 @Entity
-@Table(name = "order")
-public class Order {
+@Table(name = "media_order")
+public class MediaOrder {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,5 +38,5 @@ public class Order {
 
     @Column(name = "type", nullable = false)
     @Enumerated(EnumType.STRING)
-    private OrderType type;
+    private MediaOrderType type;
 }

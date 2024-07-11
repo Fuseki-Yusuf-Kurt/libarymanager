@@ -1,6 +1,6 @@
 package de.fuseki.enums;
 
-public enum OrderType {
+public enum MediaOrderType {
     LOAN,
     RESERVATION
 }

@@ -17,5 +17,6 @@ public interface BookMapper {
     List<BookDto> toDtoList(List<Book> bookList);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "busyDate", ignore = true)
     Book partialUpdate(BookDto bookDto, @MappingTarget() Book book);
 }

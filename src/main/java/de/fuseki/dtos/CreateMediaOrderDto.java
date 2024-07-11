@@ -6,7 +6,7 @@ import lombok.Data;
 import java.time.LocalDate;
 
 @Data
-public class CreateOrderDto {
+public class CreateMediaOrderDto {
     private Integer bookId;
     private Integer personId;
     private LocalDate beginDate;

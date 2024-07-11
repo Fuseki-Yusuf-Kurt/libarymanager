@@ -38,10 +38,33 @@ class BookServiceTest {
 
     @BeforeEach
     void setUp() {
-        testBook = new Book(1, "testTitle", "testGenre", "testAuthor", LocalDate.parse("2000-01-01"));
-        testBookWithoutId = new Book(null, "testTitle", "testGenre", "testAuthor", LocalDate.parse("2000-01-01"));
-        testBookDto = new BookDto(1, "testTitle", "testGenre", "testAuthor", LocalDate.parse("2000-01-01"));
-        testBookDtoWithoutId = new BookDto(null, "testTitle", "testGenre", "testAuthor", LocalDate.parse("2000-01-01"));
+        testBook = new Book();
+        testBook.setId(1);
+        testBook.setAuthor("testAuthor");
+        testBook.setTitle("testTitle");
+        testBook.setGenre("testGenre");
+        testBook.setReleaseDate(LocalDate.parse("2000-01-01"));
+
+        testBookWithoutId = new Book();
+        testBookWithoutId.setId(null);
+        testBookWithoutId.setAuthor("testAuthor");
+        testBookWithoutId.setTitle("testTitle");
+        testBookWithoutId.setGenre("testGenre");
+        testBookWithoutId.setReleaseDate(LocalDate.parse("2000-01-01"));
+
+        testBookDto = new BookDto();
+        testBookDto.setId(1);
+        testBookDto.setAuthor("testAuthor");
+        testBookDto.setTitle("testTitle");
+        testBookDto.setGenre("testGenre");
+        testBookDto.setReleaseDate(LocalDate.parse("2000-01-01"));
+
+        testBookDtoWithoutId = new BookDto();
+        testBookDtoWithoutId.setId(null);
+        testBookDtoWithoutId.setAuthor("testAuthor");
+        testBookDtoWithoutId.setTitle("testTitle");
+        testBookDtoWithoutId.setGenre("testGenre");
+        testBookDtoWithoutId.setReleaseDate(LocalDate.parse("2000-01-01"));
     }
 
     @Test
@@ -96,14 +119,22 @@ class BookServiceTest {
 
     @Test
     void updateBook() {
-        BookDto updateDto = new BookDto(1, "newTitle", "newGenre", null, null);
+        BookDto updateDto = new BookDto();
+        updateDto.setId(1);
+        updateDto.setTitle("newTitle");
+        updateDto.setGenre("newGenre");
         // Mocking
         when(bookRepository.findById(1)).thenReturn(Optional.of(testBook));
         // When
         BookDto returnedDto = underTest.updateBook(updateDto);
 
         // Then
-        BookDto updatedDto = new BookDto(1, "newTitle", "newGenre", testBook.getAuthor(), testBook.getReleaseDate());
+        BookDto updatedDto = new BookDto();
+        updatedDto.setId(1);
+        updatedDto.setTitle("newTitle");
+        updatedDto.setGenre("newGenre");
+        updatedDto.setAuthor(testBook.getAuthor());
+        updatedDto.setReleaseDate(testBook.getReleaseDate());
 
         assertEquals(updatedDto, returnedDto);
     }

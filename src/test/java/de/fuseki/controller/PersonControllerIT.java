@@ -73,8 +73,24 @@ public class PersonControllerIT {
     @Transactional
     public void addPersonTest() {
         //Given
-        Person person = new Person(1, "yasin", "tulyu", PersonType.CLIENT, "yasin.tuylu001@stud.fh-dortmund.de", new Address("karlstr", "33", "essen", "45666"), LocalDate.parse("2004-12-28"));
-        PersonDto personDto = new PersonDto(null, "yasin", "tulyu", PersonType.CLIENT, "yasin.tuylu001@stud.fh-dortmund.de", new Address("karlstr", "33", "essen", "45666"), LocalDate.parse("2004-12-28"));
+        PersonDto personDto = new PersonDto();
+        personDto.setId(null);
+        personDto.setName("yasin");
+        personDto.setSurName("tulyu");
+        personDto.setPersonType(PersonType.CLIENT);
+        personDto.setEmail("yasin.tuylu001@stud.fh-dortmund.de");
+        Address address = new Address("karlstr", "33", "essen", "45666");
+        personDto.setAddress(address);
+        personDto.setBirthDate(LocalDate.parse("2004-12-28"));
+
+        Person person = new Person();
+        person.setId(1);
+        person.setName("yasin");
+        person.setSurName("tulyu");
+        person.setPersonType(PersonType.CLIENT);
+        person.setEmail("yasin.tuylu001@stud.fh-dortmund.de");
+        person.setAddress(address);
+        person.setBirthDate(LocalDate.parse("2004-12-28"));
         //When
         ResponseEntity<PersonDto> responseEntity = personController.addPerson(personDto);
         PersonDto returnedDto = responseEntity.getBody();
@@ -93,8 +109,15 @@ public class PersonControllerIT {
     @Transactional
     public void addPersonTestThrowsException() {
         //Given
-        Person person = new Person(1, "yasin", "tulyu", PersonType.CLIENT, "yasin.tuylu001@stud.fh-dortmund.de", new Address("karlstr", "33", "essen", "45666"), LocalDate.parse("2004-12-28"));
-        PersonDto personDto = new PersonDto(1, "yasin", "tulyu", PersonType.CLIENT, "yasin.tuylu001@stud.fh-dortmund.de", new Address("karlstr", "33", "essen", "45666"), LocalDate.parse("2004-12-28"));
+        PersonDto personDto = new PersonDto();
+        personDto.setId(1);
+        personDto.setName("yasin");
+        personDto.setSurName("tulyu");
+        personDto.setPersonType(PersonType.CLIENT);
+        personDto.setEmail("yasin.tuylu001@stud.fh-dortmund.de");
+        Address address = new Address("karlstr", "33", "essen", "45666");
+        personDto.setAddress(address);
+        personDto.setBirthDate(LocalDate.parse("2004-12-28"));
         //When
         //Then
         assertThrowsExactly(IdShouldBeNullException.class, () -> personController.addPerson(personDto));
@@ -103,8 +126,25 @@ public class PersonControllerIT {
     @Test
     @Transactional
     public void getOnePersonTest() {
-        Person person = new Person(1, "yasin", "tulyu", PersonType.CLIENT, "yasin.tuylu001@stud.fh-dortmund.de", new Address("karlstr", "33", "essen", "45666"), LocalDate.parse("2004-12-28"));
-        PersonDto personDto = new PersonDto(null, "yasin", "tulyu", PersonType.CLIENT, "yasin.tuylu001@stud.fh-dortmund.de", new Address("karlstr", "33", "essen", "45666"), LocalDate.parse("2004-12-28"));
+        Address address = new Address("karlstr", "33", "essen", "45666");
+
+        Person person = new Person();
+        person.setId(1);
+        person.setName("yasin");
+        person.setSurName("tulyu");
+        person.setPersonType(PersonType.CLIENT);
+        person.setEmail("yasin.tuylu001@stud.fh-dortmund.de");
+        person.setAddress(address);
+        person.setBirthDate(LocalDate.parse("2004-12-28"));
+
+        PersonDto personDto = new PersonDto();
+        personDto.setId(null);
+        personDto.setName("yasin");
+        personDto.setSurName("tulyu");
+        personDto.setPersonType(PersonType.CLIENT);
+        personDto.setEmail("yasin.tuylu001@stud.fh-dortmund.de");
+        personDto.setAddress(address);
+        personDto.setBirthDate(LocalDate.parse("2004-12-28"));
 
         personController.addPerson(personDto);
         ResponseEntity<PersonDto> responseEntity = personController.getPerson(person.getId());

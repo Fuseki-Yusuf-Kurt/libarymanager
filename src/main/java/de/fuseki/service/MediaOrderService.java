@@ -1,64 +1,66 @@
 package de.fuseki.service;
 
-import de.fuseki.dtos.CreateOrderDto;
-import de.fuseki.dtos.OrderDto;
+import de.fuseki.dtos.CreateMediaOrderDto;
 import de.fuseki.entities.Book;
-import de.fuseki.entities.Order;
+import de.fuseki.entities.MediaOrder;
 import de.fuseki.entities.Person;
 import de.fuseki.exceptions.DateNotValidException;
 import de.fuseki.exceptions.IdNotFoundException;
 import de.fuseki.exceptions.IsNullException;
 import de.fuseki.mapper.OrderMapper;
 import de.fuseki.repository.BookRepository;
-import de.fuseki.repository.OrderRepository;
+import de.fuseki.repository.MediaOrderRepository;
 import de.fuseki.repository.PersonRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class OrderService {
+public class MediaOrderService {
 
-    private final OrderRepository orderRepository;
+    private final MediaOrderRepository mediaOrderRepository;
     private final PersonRepository personRepository;
     private final BookRepository bookRepository;
     private final OrderMapper orderMapper;
 
-    public void addOrder(CreateOrderDto createOrderDto) {
-        Optional<Order> orderOptional = orderRepository.findById(1);
-
-        if (createOrderDto.getPersonId() == null){
+    public void addOrder(CreateMediaOrderDto createMediaOrderDto) {
+        if (createMediaOrderDto.getPersonId() == null) {
             throw new IsNullException("personId is null");
         }
-        if (createOrderDto.getBookId() == null) {
+        if (createMediaOrderDto.getBookId() == null) {
             throw new IsNullException("bookId is null");
         }
-        if(createOrderDto.getEndDate() != null &&
-                createOrderDto.getBeginDate() != null &&
-                createOrderDto.getBeginDate().isAfter(createOrderDto.getEndDate())){
+        if (createMediaOrderDto.getEndDate() == null ||
+                createMediaOrderDto.getBeginDate() == null ||
+                createMediaOrderDto.getBeginDate().isAfter(createMediaOrderDto.getEndDate()) ||
+                createMediaOrderDto.getEndDate().isBefore(LocalDate.now())) {
             throw new DateNotValidException("Dates not valid");
         }
-        Optional<Person> optional = personRepository.findById(createOrderDto.getPersonId());
+        Optional<Person> optional = personRepository.findById(createMediaOrderDto.getPersonId());
         Person person;
         if (optional.isPresent()) {
             person = optional.get();
-        }else throw new IdNotFoundException("personId not found");
+        } else throw new IdNotFoundException("personId not found.");
 
-        Optional<Book> optionalBook = bookRepository.findById(createOrderDto.getBookId());
+        Optional<Book> optionalBook = bookRepository.findById(createMediaOrderDto.getBookId());
         Book book;
         if (optionalBook.isPresent()) {
             book = optionalBook.get();
-        }else throw new IsNullException("bookId not found");
+        } else throw new IsNullException("bookId not found");
 
-        Order mappedOrder = orderMapper.toEntity(createOrderDto);
-        book.setBusyDate(mappedOrder.getEndDate());
-        person.getOrderList().add(mappedOrder);
-       // mappedOrder.setBook(book);
-        //mappedOrder.setPerson(person);
-        orderRepository.save(mappedOrder);
+        if (book.getBusyDate() != null && book.getBusyDate().isAfter(LocalDate.now())){
+            throw new DateNotValidException("Book not available.");
+        }
+
+        MediaOrder mappedMediaOrder = orderMapper.toEntity(createMediaOrderDto);
+        book.setBusyDate(mappedMediaOrder.getEndDate());
+        person.getMediaOrderList().add(mappedMediaOrder);
+        mappedMediaOrder.setBook(book);
+        mappedMediaOrder.setPerson(person);
+        mediaOrderRepository.save(mappedMediaOrder);
     }
 
 }
