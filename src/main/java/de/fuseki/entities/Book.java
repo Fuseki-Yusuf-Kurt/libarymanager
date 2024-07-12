@@ -29,11 +29,4 @@ public class Book {
     @Column(name = "busy_date")
     @Convert(converter = LocalDateConvert.class)
     private LocalDate busyDate;
-
-    public Book(Integer id, String title, String genre, String author, LocalDate releaseDate) {
-        this.title = title;
-        this.genre = genre;
-        this.author = author;
-        this.releaseDate = releaseDate;
-    }
 }

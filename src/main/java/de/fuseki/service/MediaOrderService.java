@@ -20,7 +20,8 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class MediaOrderService {
-
+// Enddatum der Leihe festlegen
+    // Reservierung Klasse und Table erstellen
     private final MediaOrderRepository mediaOrderRepository;
     private final PersonRepository personRepository;
     private final BookRepository bookRepository;
@@ -51,7 +52,7 @@ public class MediaOrderService {
             book = optionalBook.get();
         } else throw new IsNullException("bookId not found");
 
-        if (book.getBusyDate() != null && book.getBusyDate().isAfter(LocalDate.now())){
+        if (book.getBusyDate() != null){
             throw new DateNotValidException("Book not available.");
         }
 
