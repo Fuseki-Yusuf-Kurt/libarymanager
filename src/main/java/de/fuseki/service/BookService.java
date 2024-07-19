@@ -27,7 +27,7 @@ public class BookService {
         return BookMapper.MAPPER.toDto(getBookFromDatabase(id));
     }
 
-    private Book getBookFromDatabase(int id) {
+    public Book getBookFromDatabase(int id) {
         try {
             Optional<Book> foundBook = bookRepository.findById(id);
             if (foundBook.isEmpty()) {

@@ -1,15 +1,14 @@
 package de.fuseki.entities;
 
-
 import de.fuseki.converter.AddressConverter;
 import de.fuseki.converter.LocalDateConvert;
 import de.fuseki.enums.PersonType;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 import java.util.List;
-
 
 @Getter
 @Setter
@@ -17,6 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @EqualsAndHashCode
 @Entity
+@Builder
 @Table(name = "person")
 public class Person {
     @Id

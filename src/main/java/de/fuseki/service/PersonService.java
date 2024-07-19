@@ -1,6 +1,7 @@
 package de.fuseki.service;
 
 import de.fuseki.dtos.PersonDto;
+import de.fuseki.dtos.ReservationDto;
 import de.fuseki.entities.Person;
 import de.fuseki.exceptions.EmailAlreadyExistsException;
 import de.fuseki.exceptions.IdNotFoundException;
@@ -59,7 +60,7 @@ public class PersonService {
         return PersonMapper.MAPPER.toDto(returnedPerson);
     }
 
-    private Person getPersonFromDatabase(int id) {
+    public Person getPersonFromDatabase(int id) {
         try {
             Optional<Person> foundPerson = personRepository.findById(id);
             if (foundPerson.isEmpty()) {
@@ -85,6 +86,6 @@ public class PersonService {
 
         PersonMapper.MAPPER.partialUpdate(personDto, personFromDatabase);
         return PersonMapper.MAPPER.toDto(personFromDatabase);
-    }
+            }
 
 }

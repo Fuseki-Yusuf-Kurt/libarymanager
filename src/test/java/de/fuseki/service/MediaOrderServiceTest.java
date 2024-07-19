@@ -1,6 +1,5 @@
 package de.fuseki.service;
 
-import de.fuseki.repository.BookRepository;
 import de.fuseki.repository.MediaOrderRepository;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,7 +9,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(MockitoExtension.class)
 @Transactional
 class MediaOrderServiceTest {

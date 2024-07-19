@@ -65,4 +65,13 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<ErrorObject>(errorObject,HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler(NullPointerException.class)
+    public ResponseEntity<ErrorObject> handleNullPointerException(NullPointerException e){
+        ErrorObject errorObject = new ErrorObject();
+        errorObject.setStatusCode(HttpStatus.BAD_REQUEST.value());
+        errorObject.setMessage(e.getMessage());
+        errorObject.setTimestamp(new Date());
+
+        return new ResponseEntity<ErrorObject>(errorObject, HttpStatus.BAD_REQUEST);
+    }
 }

@@ -16,8 +16,8 @@ public class MediaOrderController {
 
     private final MediaOrderService mediaOrderService;
     @PostMapping("/order")
-    public ResponseEntity addOrder(@RequestBody CreateMediaOrderDto createMediaOrderDto) {
-        mediaOrderService.addOrder(createMediaOrderDto);
+    public ResponseEntity addOrder(@RequestBody CreateMediaOrderDto mediaOrderDto) {
+        mediaOrderService.addOrder(mediaOrderDto);
         return ResponseEntity.ok().build();
     }
 }

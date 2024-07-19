@@ -1,8 +1,10 @@
 package de.fuseki.entities;
 
+import de.fuseki.converter.BooleanConverter;
 import de.fuseki.converter.LocalDateConvert;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,6 +15,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Entity
 @Table(name = "book")
+@Builder
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +29,14 @@ public class Book {
     @Column(name = "release_date")
     @Convert(converter = LocalDateConvert.class)
     private LocalDate releaseDate;
-    @Column(name = "busy_date")
+    @Column(name = "lend_date")
     @Convert(converter = LocalDateConvert.class)
-    private LocalDate busyDate;
+    private LocalDate lendDate;
+    @Convert(converter = LocalDateConvert.class)
+    @Column(name = "reserved_date")
+    private LocalDate reservedDate;
+    @Convert(converter = BooleanConverter.class)
+    @Column(name = "reserved")
+    private Boolean reserved;
+
 }

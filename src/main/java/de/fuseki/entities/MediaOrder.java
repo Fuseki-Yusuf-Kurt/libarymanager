@@ -4,39 +4,20 @@ import de.fuseki.converter.LocalDateConvert;
 import de.fuseki.enums.MediaOrderType;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
+import java.lang.annotation.Inherited;
 import java.time.LocalDate;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
 @Entity
+@SuperBuilder
 @Table(name = "media_order")
-public class MediaOrder {
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
-    @OneToOne
-    @JoinColumn(name= "book_id")
-    private Book book;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "person_id")
-    private Person person;
-
-    @Column(name = "begin_date", nullable = false)
+public class MediaOrder extends Order {
+    @Column(name = "return_date", nullable = false)
     @Convert(converter = LocalDateConvert.class)
-    private LocalDate beginDate;
-
-    @Column(name = "end_date", nullable = false)
-    @Convert(converter = LocalDateConvert.class)
-    private LocalDate endDate;
-
-    @Column(name = "type", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private MediaOrderType type;
+    private LocalDate returnDate;
 }

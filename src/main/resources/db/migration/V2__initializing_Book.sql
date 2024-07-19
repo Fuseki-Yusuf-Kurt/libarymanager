@@ -1,11 +1,13 @@
 CREATE TABLE "book"
 (
-    "id"           INTEGER,
-    "title"        TEXT NOT NULL,
-    "author"       TEXT,
-    "genre"        TEXT,
-    "release_date" TEXT,
-    "busy_date" TEXT,
+    "id"            INTEGER,
+    "title"         TEXT NOT NULL,
+    "author"        TEXT,
+    "genre"         TEXT,
+    "release_date"  TEXT,
+    "lend_date"     TEXT,
+    "reserved_date" TEXT,
+    "reserved"      INTEGER,
 
     PRIMARY KEY ("id")
 );
