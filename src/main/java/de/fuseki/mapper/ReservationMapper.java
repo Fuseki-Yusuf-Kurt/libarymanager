@@ -14,11 +14,11 @@ public interface ReservationMapper {
     ReservationMapper MAPPER = Mappers.getMapper(ReservationMapper.class);
 @Mapping(target = "personId" , expression = "java(reservation.getPerson().getId())")
 @Mapping(target = "bookId" , expression = "java(reservation.getBook().getId())")
-    public CreateReservationDto toDto(Reservation reservation);
+    public CreateReservationDto toCreateDto(Reservation reservation);
 
     @Mapping(target = "person", ignore = true)
     @Mapping(target = "book", ignore = true)
     public Reservation toEntity(CreateReservationDto reservationDto);
 
-    public Reservation toDto(ReservationDto reservationDto);
+    public ReservationDto toDto(Reservation reservation);
 }

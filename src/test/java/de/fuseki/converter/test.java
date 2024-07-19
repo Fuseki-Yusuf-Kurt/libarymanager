@@ -13,7 +13,7 @@ public class test {
         Person testperson = Person.builder().id(1).build();
         Book testbook = Book.builder().id(1).build();
         Reservation testreservation = Reservation.builder().id(1).person(testperson).book(testbook).build();
-        System.out.println(ReservationMapper.MAPPER.toDto(testreservation).getPersonId());
+        System.out.println(ReservationMapper.MAPPER.toCreateDto(testreservation).getPersonId());
 
     }
 }
