@@ -8,8 +8,6 @@ import lombok.experimental.SuperBuilder;
 import java.time.LocalDate;
 @Data
 @SuperBuilder
-@NoArgsConstructor
-@AllArgsConstructor
 public class MediaOrderDto extends OderDto{
     private LocalDate releaseDate;
 }

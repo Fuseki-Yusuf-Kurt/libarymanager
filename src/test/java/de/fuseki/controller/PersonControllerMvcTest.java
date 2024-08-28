@@ -40,7 +40,16 @@ public class PersonControllerMvcTest extends AbstractControllerMvc {
     @Sql("/3-test-persons.sql")
     @Transactional
     public void getOnePersonById() throws Exception {
-        PersonDto firstPersonDtoInDatabase = new PersonDto(1, "yasin", "tulyu", PersonType.CLIENT, "yasin.tuylu001@stud.fh-dortmund.de", new Address("karlstr", "33", "essen", "45666"), LocalDate.parse("2004-12-28"));
+        PersonDto firstPersonDtoInDatabase = PersonDto.builder()
+                .id(1)
+                .name("yasin")
+                .surName("tulyu")
+                .personType(PersonType.CLIENT)
+                .email("yasin.tuylu001@stud.fh-dortmund.de")
+                .address(new Address("karlstr", "33", "essen", "45666"))
+                .birthDate(LocalDate.parse("2004-12-28"))
+                .build();
+
         MvcResult mvcResult = mvc.perform(get("/user/{id}", 1))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -67,8 +76,10 @@ public class PersonControllerMvcTest extends AbstractControllerMvc {
     @Sql("/3-test-persons.sql")
     @Transactional
     public void putNameOfYasinToBurak() throws Exception {
-        PersonDto dtoOfTheChanges = new PersonDto(1, "NewName", null, null, null, null, null);
-        System.err.println(objectMapper.writeValueAsString(dtoOfTheChanges));
+        PersonDto dtoOfTheChanges = PersonDto.builder()
+                .id(1)
+                .name("newName")
+                .build();
         MvcResult mvcResult = mvc.perform(put(API_USER)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dtoOfTheChanges)))
@@ -84,7 +95,10 @@ public class PersonControllerMvcTest extends AbstractControllerMvc {
     @Sql("/3-test-persons.sql")
     @Transactional
     public void putEmailToExistingEmailReturnsExceptionTest() throws Exception {
-        PersonDto dtoOfTheChanges = new PersonDto(1, null, null, null, "mfischer@fuseki.de", null, null);
+        PersonDto dtoOfTheChanges = PersonDto.builder()
+                .id(1)
+                .email("mfischer@fuseki.de")
+                .build();
         MvcResult mvcResult = mvc.perform(put(API_USER)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dtoOfTheChanges)))
@@ -115,7 +129,15 @@ public class PersonControllerMvcTest extends AbstractControllerMvc {
     @Transactional
     public void postOnePerson() throws Exception {
         //Given
-        PersonDto personDto = new PersonDto(null, "yasin", "tulyu", PersonType.CLIENT, "yasin.tuylu001@stud.fh-dortmund.de", new Address("karlstr", "33", "essen", "45666"), LocalDate.parse("2004-12-28"));
+        PersonDto personDto = PersonDto.builder()
+                .id(null)
+                .name("yasin")
+                .surName("tulyu")
+                .personType(PersonType.CLIENT)
+                .email("yasin.tuylu001@stud.fh-dortmund.de")
+                .address(new Address("karlstr", "33", "essen", "45666"))
+                .birthDate(LocalDate.parse("2004-12-28"))
+                .build();
 
         MvcResult result = mvc
                 .perform(
@@ -149,7 +171,15 @@ public class PersonControllerMvcTest extends AbstractControllerMvc {
     @Transactional
     public void postOnePersonReturnsIdNullException() throws Exception {
         //Given
-        PersonDto personDto = new PersonDto(1, "yasin", "tulyu", PersonType.CLIENT, "yasin.tuylu001@stud.fh-dortmund.de", new Address("karlstr", "33", "essen", "45666"), LocalDate.parse("2004-12-28"));
+        PersonDto personDto = PersonDto.builder()
+                .id(1)
+                .name("yasin")
+                .surName("tulyu")
+                .personType(PersonType.CLIENT)
+                .email("yasin.tuylu001@stud.fh-dortmund.de")
+                .address(new Address("karlstr", "33", "essen", "45666"))
+                .birthDate(LocalDate.parse("2004-12-28"))
+                .build();
 
         MvcResult result = mvc
                 .perform(
@@ -169,7 +199,15 @@ public class PersonControllerMvcTest extends AbstractControllerMvc {
     @Transactional
     @Sql("/3-test-persons.sql")
     public void postOnePersonReturnsEmailAlreadyExistsException() throws Exception {
-        PersonDto personDto = new PersonDto(null, "yasin", "tulyu", PersonType.CLIENT, "yasin.tuylu001@stud.fh-dortmund.de", new Address("karlstr", "33", "essen", "45666"), LocalDate.parse("2004-12-28"));
+        PersonDto personDto = PersonDto.builder()
+                .id(null)
+                .name("yasin")
+                .surName("tulyu")
+                .personType(PersonType.CLIENT)
+                .email("yasin.tuylu001@stud.fh-dortmund.de")
+                .address(new Address("karlstr", "33", "essen", "45666"))
+                .birthDate(LocalDate.parse("2004-12-28"))
+                .build();
 
         MvcResult result = mvc
                 .perform(
@@ -218,54 +256,52 @@ public class PersonControllerMvcTest extends AbstractControllerMvc {
                                 .build()),
                 Arguments.of(
                         "surName = null throws IsNullException.",
-                        new PersonDto(
-                                null,
-                                "notNullName",
-                                null,
-                                PersonType.CLIENT,
-                                "NotNullAndNotExisting@email.de",
-                                new Address("karlstr", "33", "essen", "45666"),
-                                LocalDate.parse("2004-12-28"))),
+                        PersonDto.builder()
+                                .name("notNull")
+                                .surName(null)
+                                .personType(PersonType.CLIENT)
+                                .email("NotNullAndNotExisting@email.de")
+                                .address(new Address("karlstr", "33", "essen", "45666"))
+                                .birthDate(LocalDate.parse("2000-11-11"))
+                                .build()),
                 Arguments.of(
                         "personType = null throws IsNullException.",
-                        new PersonDto(
-                                null,
-                                "notNullName",
-                                "notNullSurname",
-                                null,
-                                "NotNullAndNotExisting@email.de",
-                                new Address("karlstr", "33", "essen", "45666"),
-                                LocalDate.parse("2004-12-28"))),
+                        PersonDto.builder()
+                                .name("notNull")
+                                .surName("notNull")
+                                .personType(null)
+                                .email("NotNullAndNotExisting@email.de")
+                                .address(new Address("karlstr", "33", "essen", "45666"))
+                                .birthDate(LocalDate.parse("2000-11-11"))
+                                .build()),
                 Arguments.of(
                         "email = null throws IsNullException.",
-                        new PersonDto(
-                                null,
-                                "notNullName",
-                                "notNullSurname",
-                                PersonType.CLIENT,
-                                null,
-                                new Address("karlstr", "33", "essen", "45666"),
-                                LocalDate.parse("2004-12-28"))),
+                        PersonDto.builder()
+                                .name("notNull")
+                                .surName("notNull")
+                                .personType(PersonType.CLIENT)
+                                .email(null)
+                                .address(new Address("karlstr", "33", "essen", "45666"))
+                                .birthDate(LocalDate.parse("2000-11-11"))
+                                .build()),
                 Arguments.of(
                         "address = null throws IsNullException.",
-                        new PersonDto(
-                                null,
-                                "notNullName",
-                                "notNullSurname",
-                                PersonType.CLIENT,
-                                "NotNullAndNotExisting@email.de",
-                                null,
-                                LocalDate.parse("2004-12-28"))),
+                        PersonDto.builder()
+                                .name("notNull")
+                                .surName("notNull")
+                                .personType(PersonType.CLIENT)
+                                .email("NotNullAndNotExisting@email.de")
+                                .birthDate(LocalDate.parse("2000-11-11"))
+                                .build()),
                 Arguments.of(
                         "birthDate = null throws IsNullException.",
-                        new PersonDto(
-                                null,
-                                "notNullName",
-                                "notNullSurname",
-                                PersonType.CLIENT,
-                                "NotNullAndNotExisting@email.de",
-                                new Address("karlstr", "33", "essen", "45666"),
-                                null)));
+                        PersonDto.builder()
+                                .name("notNull")
+                                .surName("notNull")
+                                .personType(PersonType.CLIENT)
+                                .email("NotNullAndNotExisting@email.de")
+                                .address(new Address("karlstr", "33", "essen", "45666"))
+                                .build()));
     }
 
 

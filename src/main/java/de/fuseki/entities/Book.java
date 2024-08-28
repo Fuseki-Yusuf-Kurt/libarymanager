@@ -32,6 +32,9 @@ public class Book {
     @Column(name = "lend_date")
     @Convert(converter = LocalDateConvert.class)
     private LocalDate lendDate;
+    @Convert(converter = BooleanConverter.class)
+    @Column(name = "lended")
+    private Boolean lended;
     @Convert(converter = LocalDateConvert.class)
     @Column(name = "reserved_date")
     private LocalDate reservedDate;

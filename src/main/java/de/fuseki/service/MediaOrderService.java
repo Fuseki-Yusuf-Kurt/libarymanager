@@ -16,8 +16,6 @@ import java.time.LocalDate;
 @Service
 @RequiredArgsConstructor
 public class MediaOrderService {
-// Enddatum der Leihe festlegen
-    // Reservierung Klasse und Table erstellen
     private final MediaOrderRepository mediaOrderRepository;
     private final PersonService personService;
     private final BookService bookService;
@@ -46,7 +44,6 @@ public class MediaOrderService {
 
         MediaOrder mappedMediaOrder = mediaOrderMapper.toEntity(mediaOrderDto);
         book.setLendDate(mappedMediaOrder.getEndDate());
-        person.getMediaOrderList().add(mappedMediaOrder);
         mappedMediaOrder.setBook(book);
         mappedMediaOrder.setPerson(person);
         mediaOrderRepository.save(mappedMediaOrder);

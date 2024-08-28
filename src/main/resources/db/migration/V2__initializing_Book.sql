@@ -8,6 +8,7 @@ CREATE TABLE "book"
     "lend_date"     TEXT,
     "reserved_date" TEXT,
     "reserved"      INTEGER,
+    "lended"        INTEGER,
 
     PRIMARY KEY ("id")
 );

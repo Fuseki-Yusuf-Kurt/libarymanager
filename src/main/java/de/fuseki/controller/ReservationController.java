@@ -1,6 +1,5 @@
 package de.fuseki.controller;
 
-import de.fuseki.dtos.CreateReservationDto;
 import de.fuseki.dtos.ReservationDto;
 import de.fuseki.service.ReservationService;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +15,7 @@ public class ReservationController {
     private final ReservationService reservationService;
 
     @PostMapping("/reservation")
-    public ResponseEntity<CreateReservationDto> addReservation(@RequestBody CreateReservationDto reservationDto) {
+    public ResponseEntity<ReservationDto> addReservation(@RequestBody ReservationDto reservationDto) {
         return ResponseEntity.ok(reservationService.addReservation(reservationDto));
     }
     @GetMapping("/reservation/{id}")

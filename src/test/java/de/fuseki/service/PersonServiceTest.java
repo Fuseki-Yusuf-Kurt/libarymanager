@@ -7,7 +7,6 @@ import de.fuseki.enums.PersonType;
 import de.fuseki.exceptions.EmailAlreadyExistsException;
 import de.fuseki.exceptions.IdShouldBeNullException;
 import de.fuseki.mapper.PersonMapper;
-import de.fuseki.mapper.PersonMapperImpl;
 import de.fuseki.repository.PersonRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -114,7 +113,7 @@ class PersonServiceTest {
         when(personRepository.findById(1)).thenThrow(EntityNotFoundException.class);
         //Then
         assertThrows(RuntimeException.class, () -> {
-            underTest.updatePerson(new PersonDto(1, null, null, null, null, null, null));
+            underTest.updatePerson(PersonDto.builder().id(1).build());
         });
     }
 
@@ -133,13 +132,7 @@ class PersonServiceTest {
         when(personRepository.existsByEmail("existingmail@test.test")).thenReturn(true);
         //Then
         assertThrows(EmailAlreadyExistsException.class, () -> {
-            underTest.updatePerson(new PersonDto(1,
-                    null,
-                    null,
-                    null,
-                    "existingmail@test.test",
-                    null,
-                    null));
+            underTest.updatePerson(PersonDto.builder().id(1).email("existingmail@test.test").build());
         });
     }
 
@@ -173,7 +166,15 @@ class PersonServiceTest {
         when(personRepository.existsByEmail(newEmail)).thenReturn(false);
 
         //When
-        PersonDto newPersonDto = new PersonDto(1, newName, newSurname, newPerosonType, newEmail, newAddress, newDate);
+        PersonDto newPersonDto = PersonDto.builder()
+                .id(1)
+                .name(newName)
+                .surName(newSurname)
+                .personType(newPerosonType)
+                .email(newEmail)
+                .address(newAddress)
+                .birthDate(newDate)
+                .build();
         PersonDto DtoFromTestedMethod = underTest.updatePerson(newPersonDto);
 
         //Then

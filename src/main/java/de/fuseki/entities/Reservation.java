@@ -13,6 +13,5 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Entity
-@Table(name = "reservation")
 public class Reservation extends Order{
 }

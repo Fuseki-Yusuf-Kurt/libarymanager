@@ -28,6 +28,8 @@ public class BookControllerMockMvcTest extends AbstractControllerMvc {
     @BeforeEach
     void setUp() {
         testBook1 = new BookDto();
+        testBook1.setReserved(false);
+        testBook1.setLended(false);
         testBook1.setId(1);
         testBook1.setTitle("testTitle1");
         testBook1.setAuthor("testAuthor1");
@@ -35,12 +37,16 @@ public class BookControllerMockMvcTest extends AbstractControllerMvc {
         testBook1.setReleaseDate(LocalDate.parse("2001-01-01"));
 
         testBook1WithoutId = new BookDto();
+        testBook1WithoutId.setReserved(false);
+        testBook1WithoutId.setLended(false);
         testBook1WithoutId.setTitle("testTitle1");
         testBook1WithoutId.setAuthor("testAuthor1");
         testBook1WithoutId.setGenre("testGenre1");
         testBook1WithoutId.setReleaseDate(LocalDate.parse("2001-01-01"));
 
         testBook2 = new BookDto();
+        testBook2.setReserved(false);
+        testBook2.setLended(false);
         testBook2.setId(2);
         testBook2.setTitle("testTitle2");
         testBook2.setAuthor("testAuthor2");
@@ -48,6 +54,8 @@ public class BookControllerMockMvcTest extends AbstractControllerMvc {
         testBook2.setReleaseDate(LocalDate.parse("2002-02-02"));
 
         testBook2WithoutId = new BookDto();
+        testBook2WithoutId.setReserved(false);
+        testBook2WithoutId.setLended(false);
         testBook2WithoutId.setTitle("testTitle2");
         testBook2WithoutId.setAuthor("testAuthor2");
         testBook2WithoutId.setGenre("testGenre2");
@@ -55,6 +63,8 @@ public class BookControllerMockMvcTest extends AbstractControllerMvc {
 
         testBook3 = new BookDto();
         testBook3.setId(3);
+        testBook3.setReserved(false);
+        testBook3.setLended(false);
         testBook3.setTitle("testTitle3");
         testBook3.setAuthor("testAuthor3");
         testBook3.setGenre("testGenre3");
@@ -207,6 +217,8 @@ public class BookControllerMockMvcTest extends AbstractControllerMvc {
     public void mvcTestUpdateBook() throws Exception {
         BookDto updateDto = new BookDto();
         updateDto.setId(1);
+        updateDto.setReserved(false);
+        updateDto.setLended(false);
         updateDto.setTitle("newTitle1");
         updateDto.setGenre("newGenre1");
         updateDto.setAuthor("newAuthor");

@@ -18,6 +18,7 @@ public class BookDto {
     private String author;
     private LocalDate releaseDate;
     private LocalDate lendDate;
+    private Boolean lended;
     private LocalDate reservedDate;
     private Boolean reserved;
 }

@@ -1,7 +1,8 @@
 package de.fuseki.service;
 
 import de.fuseki.dtos.BookDto;
-import de.fuseki.dtos.CreateReservationDto;
+import de.fuseki.dtos.PersonDto;
+import de.fuseki.dtos.ReservationDto;
 import de.fuseki.entities.Address;
 import de.fuseki.entities.Book;
 import de.fuseki.entities.Person;
@@ -121,27 +122,27 @@ class ReservationServiceTest {
     @ParameterizedTest(name = "{0}")
     @Transactional
     @MethodSource("addReservationTestData")
-    void addReservationDataValidationTest(String testName, int person, CreateReservationDto insertedDto, Class exceptionClass) throws Exception {
+    void addReservationDataValidationTest(String testName, int person, ReservationDto insertedDto, Class exceptionClass) throws Exception {
         // Mocking
         switch (person) {
             case 1:
-                when(bookService.getBookFromDatabase(insertedDto.getBookId()))
+                when(bookService.getBookFromDatabase(insertedDto.getBook().getId()))
                         .thenReturn(testBookNotLendedNotReserved);
                 break;
             case 2:
-                when(bookService.getBookFromDatabase(insertedDto.getBookId()))
+                when(bookService.getBookFromDatabase(insertedDto.getBook().getId()))
                         .thenReturn(testBookLendedNotReserved);
                 break;
             case 3:
-                when(bookService.getBookFromDatabase(insertedDto.getBookId()))
+                when(bookService.getBookFromDatabase(insertedDto.getBook().getId()))
                         .thenReturn(testBookNotLendedButReserved);
                 break;
             case 4:
-                when(bookService.getBookFromDatabase(insertedDto.getBookId()))
+                when(bookService.getBookFromDatabase(insertedDto.getBook().getId()))
                         .thenReturn(testBookLendedAndReserved);
                 break;
         }
-        when(personService.getPersonFromDatabase(insertedDto.getPersonId())).thenReturn(testPerson1);
+        when(personService.getPersonFromDatabase(insertedDto.getPerson().getId())).thenReturn(testPerson1);
 
         assertThrows(exceptionClass, () -> reservationService.addReservation(insertedDto));
     }
@@ -149,9 +150,9 @@ class ReservationServiceTest {
     @Test
     void addReservationTestingNotLendedAndNotReserved() {
         //WHEN
-        CreateReservationDto reservationDto = CreateReservationDto.builder()
-                .bookId(1)
-                .personId(1)
+        ReservationDto reservationDto = ReservationDto.builder()
+                .book(BookDto.builder().id(1).build())
+                .person(PersonDto.builder().id(1).build())
                 .endDate(LocalDate.now().plusDays(7))
                 .build();
         Reservation saveReservation = Reservation.builder()
@@ -169,7 +170,7 @@ class ReservationServiceTest {
         //MOCK
         when(bookService.getBookFromDatabase(testBookNotLendedNotReservedDto.getId()))
                 .thenReturn(testBookNotLendedNotReserved);
-        when(personService.getPersonFromDatabase(reservationDto.getPersonId())).thenReturn(testPerson1);
+        when(personService.getPersonFromDatabase(reservationDto.getPerson().getId())).thenReturn(testPerson1);
 
         when(reservationRepository.save((saveReservation))).thenReturn(returnedReservation);
         // WHEN
@@ -180,11 +181,11 @@ class ReservationServiceTest {
     }
 
     @Test
-    void addReservationTestingIfReservatedIsSetToTrue(){
+    void addReservationTestingIfReservatedIsSetToTrue() {
         //WHEN
-        CreateReservationDto reservationDto = CreateReservationDto.builder()
-                .bookId(1)
-                .personId(1)
+        ReservationDto reservationDto = ReservationDto.builder()
+                .book(BookDto.builder().id(1).build())
+                .person(PersonDto.builder().id(1).build())
                 .build();
         Reservation saveReservation = Reservation.builder()
                 .endDate(reservationDto.getEndDate())
@@ -201,7 +202,7 @@ class ReservationServiceTest {
         //MOCK
         when(bookService.getBookFromDatabase(testBookNotLendedNotReservedDto.getId()))
                 .thenReturn(testBookLendedNotReserved);
-        when(personService.getPersonFromDatabase(reservationDto.getPersonId())).thenReturn(testPerson1);
+        when(personService.getPersonFromDatabase(reservationDto.getPerson().getId())).thenReturn(testPerson1);
 
         when(reservationRepository.save((saveReservation))).thenReturn(returnedReservation);
 
@@ -216,66 +217,66 @@ class ReservationServiceTest {
         return Stream.of(
                 Arguments.of("Reservation id is set so exception is thrown.",
                         1,
-                        CreateReservationDto.builder()
+                        ReservationDto.builder()
                                 .endDate(LocalDate.now().plusDays(7))
                                 .id(1)
-                                .bookId(1)
-                                .personId(1)
+                                .book(BookDto.builder().id(1).build())
+                                .person(PersonDto.builder().id(1).build())
                                 .build(),
                         IdShouldBeNullException.class)
                 ,
                 Arguments.of("Begin date is not null throws exception.",
                         1,
-                        CreateReservationDto.builder()
+                        ReservationDto.builder()
                                 .endDate(LocalDate.now().plusDays(7))
                                 .beginDate(LocalDate.now())
-                                .bookId(1)
-                                .personId(1)
+                                .book(BookDto.builder().id(1).build())
+                                .person(PersonDto.builder().id(1).build())
                                 .build(),
                         DateNotValidException.class)
                 ,
                 Arguments.of("End date is null throws exception.",
                         1,
-                        CreateReservationDto.builder()
+                        ReservationDto.builder()
                                 .endDate(null)
-                                .bookId(1)
-                                .personId(1)
+                                .book(BookDto.builder().id(1).build())
+                                .person(PersonDto.builder().id(1).build())
                                 .build(),
                         DateNotValidException.class)
                 ,
                 Arguments.of("End date is in the past throws exception.",
                         1,
-                        CreateReservationDto.builder()
+                        ReservationDto.builder()
                                 .endDate(LocalDate.now().minusDays(10))
-                                .bookId(1)
-                                .personId(1)
+                                .book(BookDto.builder().id(1).build())
+                                .person(PersonDto.builder().id(1).build())
                                 .build(),
                         DateNotValidException.class)
                 ,
                 Arguments.of("End date is more than two weeks after now throws exception.",
                         1,
-                        CreateReservationDto.builder()
+                        ReservationDto.builder()
                                 .endDate(LocalDate.now().plusDays(15))
-                                .bookId(1)
-                                .personId(1)
+                                .book(BookDto.builder().id(1).build())
+                                .person(PersonDto.builder().id(1).build())
                                 .build(),
                         DateNotValidException.class)
                 ,
                 Arguments.of("End date is not null throws exception.",
                         2,
-                        CreateReservationDto.builder()
+                        ReservationDto.builder()
                                 .endDate(LocalDate.now().plusDays(2))
-                                .bookId(1)
-                                .personId(1)
+                                .book(BookDto.builder().id(1).build())
+                                .person(PersonDto.builder().id(1).build())
                                 .build(),
                         DateNotValidException.class)
                 ,
                 Arguments.of("Test if 3rd testcase works.",
                         3,
-                        CreateReservationDto.builder()
+                        ReservationDto.builder()
                                 .endDate(LocalDate.now().plusDays(2))
-                                .bookId(1)
-                                .personId(1)
+                                .book(BookDto.builder().id(1).build())
+                                .person(PersonDto.builder().id(1).build())
                                 .build(),
                         NullPointerException.class)
         );

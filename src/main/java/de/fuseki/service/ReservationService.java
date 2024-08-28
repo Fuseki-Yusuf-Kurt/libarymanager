@@ -1,6 +1,5 @@
 package de.fuseki.service;
 
-import de.fuseki.dtos.CreateReservationDto;
 import de.fuseki.dtos.ReservationDto;
 import de.fuseki.entities.Book;
 import de.fuseki.entities.Person;
@@ -23,8 +22,8 @@ public class ReservationService {
     private final PersonService personService;
     private final BookService bookService;
 
-    public CreateReservationDto addReservation(CreateReservationDto reservationDto) {
-        if (reservationDto.getId() != null) {
+    public ReservationDto addReservation(ReservationDto reservationDto) {
+        if (reservationDto.getId() != 0) {
             throw new IdShouldBeNullException("Reservation id is not null.");
         }
 
@@ -32,13 +31,14 @@ public class ReservationService {
             throw new DateNotValidException("Begin date is not null.");
         }
 
-        Person person = personService.getPersonFromDatabase(reservationDto.getPersonId());
-        Book book = bookService.getBookFromDatabase(reservationDto.getBookId());
+        Person person = personService.getPersonFromDatabase(reservationDto.getPerson().getId());
+        Book book = bookService.getBookFromDatabase(reservationDto.getBook().getId());
         Reservation reservation = ReservationMapper.MAPPER.toEntity(reservationDto);
         reservation.setBook(book);
         reservation.setPerson(person);
-        CreateReservationDto returnedReservationDto = null;
-        if (book.getLendDate() == null && book.getReservedDate() == null && !book.getReserved()) {
+        reservation.setBeginDate(LocalDate.now());
+        ReservationDto returnedReservationDto = null;
+        if (!book.getLended() && book.getLendDate() == null && book.getReservedDate() == null && !book.getReserved()) {
             returnedReservationDto = reservate(reservation);
         } else if (book.getLendDate() != null
                 && book.getReservedDate() == null
@@ -47,15 +47,15 @@ public class ReservationService {
                 throw new DateNotValidException("End date is not null.");
             }
             book.setReserved(true);
-            returnedReservationDto = ReservationMapper.MAPPER.toCreateDto(reservationRepository.save(reservation));
+            returnedReservationDto = ReservationMapper.MAPPER.toDto(reservationRepository.save(reservation));
 
-        } else  {
+        } else {
             throw new NullPointerException("Book is not available.");
         }
         return returnedReservationDto;
     }
 
-    private CreateReservationDto reservate(Reservation reservation) {
+    private ReservationDto reservate(Reservation reservation) {
         LocalDate fromDate = LocalDate.now();
         if (reservation.getEndDate() == null) {
             throw new DateNotValidException("End date is null.");
@@ -70,11 +70,7 @@ public class ReservationService {
 
         reservation.getBook().setReservedDate(reservation.getEndDate());
         Reservation returnedReservation = reservationRepository.save(reservation);
-        CreateReservationDto returnedReservationDto = ReservationMapper.MAPPER.toCreateDto(returnedReservation);
-        returnedReservationDto.setBookId(returnedReservation.getBook().getId());
-        returnedReservationDto.setPersonId(returnedReservation.getPerson().getId());
-        return returnedReservationDto;
-
+        return ReservationMapper.MAPPER.toDto(returnedReservation);
     }
 
     public ReservationDto getReservation(Integer id) {
@@ -85,9 +81,16 @@ public class ReservationService {
     }
 
     public void deleteReservation(Integer id) {
-        if (!reservationRepository.existsById(id)) {
-            throw new IdNotFoundException("Reservation Id not found.");
-        }
+        getReservationFromDatabase(id).getBook().setReserved(false);
         reservationRepository.deleteById(id);
+    }
+
+    private Reservation getReservationFromDatabase(Integer id) {
+        Optional<Reservation> foundReservation = reservationRepository.findById(id);
+        Reservation returnedReservation;
+        if (foundReservation.isPresent()) {
+            returnedReservation = foundReservation.get();
+        } else throw new IdNotFoundException("Reservation Id not found.");
+        return returnedReservation;
     }
 }

@@ -36,9 +36,36 @@ public class PersonControllerIT {
     @Transactional
     public void testGetUsersReturnsAllUsers() {
         //Given
-        PersonDto person1 = new PersonDto(1, "yasin", "tulyu", PersonType.CLIENT, "yasin.tuylu001@stud.fh-dortmund.de", new Address("karlstr", "33", "essen", "45666"), LocalDate.parse("2004-12-28"));
-        PersonDto person2 = new PersonDto(2, "yusuf", "kurt", PersonType.EMPLOYEE, "yusuf.kurt001@stud.fh-dortmund.de", new Address("jobststr", "64", "herne", "44627"), LocalDate.parse("2003-12-28"));
-        PersonDto person3 = new PersonDto(3, "marc", "fischer", PersonType.ADMIN, "mfischer@fuseki.de", new Address("schürrmannstr", "32", "essen", "47434"), LocalDate.parse("1990-11-12"));
+        PersonDto person1 = PersonDto.builder()
+                .id(1)
+                .name("yasin")
+                .surName("tulyu")
+                .personType(PersonType.CLIENT)
+                .email("yasin.tuylu001@stud.fh-dortmund.de")
+                .address(new Address("karlstr", "33", "essen", "45666"))
+                .birthDate(LocalDate.parse("2004-12-28"))
+                .build();
+
+        PersonDto person2 = PersonDto.builder()
+                .id(2)
+                .name("yusuf")
+                .surName("kurt")
+                .personType(PersonType.EMPLOYEE)
+                .email("yusuf.kurt001@stud.fh-dortmund.de")
+                .address(new Address("jobststr", "64", "herne", "44627"))
+                .birthDate(LocalDate.parse("2003-12-28"))
+                .build();
+
+        PersonDto person3 = PersonDto.builder()
+                .id(3)
+                .name("marc")
+                .surName("fischer")
+                .personType(PersonType.ADMIN)
+                .email("mfischer@fuseki.de")
+                .address(new Address("schürrmannstr", "32", "essen", "47434"))
+                .birthDate(LocalDate.parse("1990-11-12"))
+                .build();
+
         List<PersonDto> expected = List.of(person1, person2, person3);
 
         ResponseEntity<List<PersonDto>> actualResponseEntity = personController.getAllPersons();

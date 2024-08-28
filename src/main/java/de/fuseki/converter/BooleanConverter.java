@@ -15,7 +15,7 @@ public class BooleanConverter implements AttributeConverter<Boolean, Integer> {
 
     @Override
     public Boolean convertToEntityAttribute(Integer integer) {
-        if (integer == null) return null;
+        if (integer == null) return false;
         if (integer == 1) {
             return true;
         } else if (integer == 0 ){

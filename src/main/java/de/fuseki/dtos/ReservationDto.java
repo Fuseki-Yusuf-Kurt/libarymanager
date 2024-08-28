@@ -1,7 +1,13 @@
 package de.fuseki.dtos;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
-@Data
+
+@SuperBuilder
+@ToString
+@AllArgsConstructor
 public class ReservationDto extends OderDto {
 }
