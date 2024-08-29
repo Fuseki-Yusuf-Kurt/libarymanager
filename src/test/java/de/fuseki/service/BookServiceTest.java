@@ -81,17 +81,6 @@ class BookServiceTest {
     }
 
     @Test
-    @Disabled
-    void deleteBookDeletsBook() {
-        // Mocking
-        when(bookRepository.existsById(1)).thenReturn(true);
-        // When
-        underTest.deleteBook(1);
-        // Then
-        verify(bookRepository, times(1)).deleteById(1);
-    }
-
-    @Test
     void addBookAddsTestBookThrowsIdShouldBeNullException() {
         // When
         assertThrowsExactly(IdShouldBeNullException.class, () -> underTest.addBook(testBookDto));

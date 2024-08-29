@@ -62,6 +62,7 @@ class ReservationServiceTest {
                 .author("test author")
                 .releaseDate(LocalDate.parse("2000-12-12"))
                 .reserved(false)
+                .lended(false)
                 .build();
         testBookNotLendedNotReservedDto = BookDto.builder()
                 .id(1)
@@ -80,6 +81,7 @@ class ReservationServiceTest {
                 .releaseDate(LocalDate.parse("2000-12-12"))
                 .lendDate(LocalDate.now().plusWeeks(1))
                 .reserved(false)
+                .lended(false)
                 .build();
 
         testBookLendedNotReservedDto = BookDto.builder()
@@ -265,7 +267,7 @@ class ReservationServiceTest {
                 Arguments.of("End date is not null throws exception.",
                         2,
                         ReservationDto.builder()
-                                .endDate(LocalDate.now().plusDays(2))
+                                .endDate(LocalDate.now())
                                 .book(BookDto.builder().id(1).build())
                                 .person(PersonDto.builder().id(1).build())
                                 .build(),

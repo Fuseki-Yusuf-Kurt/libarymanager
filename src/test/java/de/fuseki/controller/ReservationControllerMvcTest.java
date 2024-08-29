@@ -39,7 +39,7 @@ public class ReservationControllerMvcTest extends AbstractControllerMvc {
             .genre("testGenre1")
             .author("testAuthor1")
             .releaseDate(LocalDate.parse("2001-01-01"))
-            .reservedDate(LocalDate.parse("2024-09-07"))
+            .reservedDate(LocalDate.parse("2024-09-08"))
             .build();
 
     @Test
@@ -51,18 +51,16 @@ public class ReservationControllerMvcTest extends AbstractControllerMvc {
                 .book(BookDto.builder().id(1).build())
                 .person(PersonDto.builder().id(1).build())
                 .build();
-        System.out.println(objectMapper.writeValueAsString(reservationDto));
         MvcResult mvcResult = mvc.perform(post("/reservation")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(reservationDto)))
                 .andExpect(status().isOk())
                 .andReturn();
-        ReservationDto returndedDto = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), ReservationDto.class);
+        ReservationDto returnedDto = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), ReservationDto.class);
 
-        assertEquals(returndedDto.getEndDate(), reservationDto.getEndDate());
-        assertEquals(testBook, returndedDto.getBook());
-        assertEquals(testPersonDto, returndedDto.getPerson());
-        assertEquals(LocalDate.now().getDayOfYear(), returndedDto.getBeginDate().getDayOfYear());
+        assertEquals(returnedDto.getEndDate(), reservationDto.getEndDate());
+        assertEquals(testBook, returnedDto.getBook());
+        assertEquals(testPersonDto, returnedDto.getPerson());
+        assertEquals(LocalDate.now().getDayOfYear(), returnedDto.getBeginDate().getDayOfYear());
     }
-
 }

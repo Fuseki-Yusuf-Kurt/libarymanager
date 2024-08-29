@@ -4,12 +4,10 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
-@ToString
 public abstract class OderDto {
     private int id;
     private PersonDto person;

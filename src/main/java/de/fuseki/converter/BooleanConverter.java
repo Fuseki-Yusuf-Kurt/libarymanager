@@ -20,6 +20,6 @@ public class BooleanConverter implements AttributeConverter<Boolean, Integer> {
             return true;
         } else if (integer == 0 ){
             return false;
-        } else return null;
+        } else return false;
     }
 }
